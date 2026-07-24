@@ -13,7 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->redirectTo(
+            guests: '/admin/login'
+        );
+
+        // Security Headers Middleware
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
+        // Auto Lockout Middleware for Web Requests
+        $middleware->web(append: [
+            \App\Http\Middleware\AdminAutoLockout::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

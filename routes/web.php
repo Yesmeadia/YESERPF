@@ -10,17 +10,17 @@ use Illuminate\Support\Facades\Route;
 // Public Portal Routes
 Route::get('/', [PublicSchoolController::class, 'index'])->name('home');
 Route::get('/register', [PublicSchoolController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [PublicSchoolController::class, 'register'])->name('register.submit');
+Route::post('/register', [PublicSchoolController::class, 'register'])->middleware('throttle:10,1')->name('register.submit');
 Route::get('/api/zones', [PublicSchoolController::class, 'getZones'])->name('public.zones');
-Route::get('/api/check-suic', [PublicSchoolController::class, 'checkSuic'])->name('public.check-suic');
+Route::get('/api/check-suic', [PublicSchoolController::class, 'checkSuic'])->middleware('throttle:30,1')->name('public.check-suic');
 
-
-
+// Fallback Login Route Alias
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
 // Admin Authentication Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1')->name('login.submit');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Protected Admin Routes

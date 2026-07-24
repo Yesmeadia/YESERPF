@@ -338,6 +338,78 @@
             })();
     </script>
 
+    @if(request()->is('admin*') && auth()->check())
+        <!-- Auto Lockout / Idle Timeout Warning Modal & Monitor -->
+        <div x-data="autoLockout()" x-init="initTimer()" x-show="showWarning" x-cloak x-transition
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-4">
+                <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-extrabold text-slate-900">Inactivity Warning</h3>
+                    <p class="text-xs text-slate-500 mt-1">Your session will expire soon due to inactivity. You will be automatically locked out in:</p>
+                </div>
+                <div class="py-3 bg-slate-50 rounded-2xl border border-slate-200 text-2xl font-mono font-black text-[#271e6d]">
+                    <span x-text="formattedCountdown"></span>
+                </div>
+                <div class="flex items-center gap-3 pt-2">
+                    <button @click="stayLoggedIn()" class="w-full py-2.5 px-4 bg-[#271e6d] hover:bg-[#1f1659] text-white rounded-xl text-xs font-bold transition-all shadow-md">
+                        Keep Me Signed In
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function autoLockout() {
+                return {
+                    idleTime: 0,
+                    maxIdle: 900, // 15 minutes total
+                    warningThreshold: 840, // Show warning at 14 minutes
+                    showWarning: false,
+                    countdown: 60,
+                    intervalId: null,
+                    get formattedCountdown() {
+                        const m = Math.floor(this.countdown / 60);
+                        const s = this.countdown % 60;
+                        return `${m}:${s < 10 ? '0' : ''}${s}`;
+                    },
+                    initTimer() {
+                        const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+                        events.forEach(e => window.addEventListener(e, () => this.resetTimer(), { passive: true }));
+                        
+                        this.intervalId = setInterval(() => {
+                            this.idleTime++;
+                            if (this.idleTime >= this.maxIdle) {
+                                this.lockout();
+                            } else if (this.idleTime >= this.warningThreshold) {
+                                this.showWarning = true;
+                                this.countdown = this.maxIdle - this.idleTime;
+                            } else {
+                                this.showWarning = false;
+                            }
+                        }, 1000);
+                    },
+                    resetTimer() {
+                        if (!this.showWarning) {
+                            this.idleTime = 0;
+                        }
+                    },
+                    stayLoggedIn() {
+                        this.idleTime = 0;
+                        this.showWarning = false;
+                        fetch('{{ route("admin.dashboard") }}', { method: 'HEAD' });
+                    },
+                    lockout() {
+                        clearInterval(this.intervalId);
+                        window.location.href = '{{ route("admin.login") }}';
+                    }
+                }
+            }
+        </script>
+    @endif
+
     @yield('scripts')
 </body>
 
