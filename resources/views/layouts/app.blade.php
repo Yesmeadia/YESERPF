@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,13 +9,22 @@
     <title>@yield('title', 'YES INDIA SCHOOLS ERP - Registration & Status Management System')</title>
     <meta name="description" content="YES INDIA Schools ERP - School Registration and Status Management System.">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
+
     <!-- Google Fonts: Inter & Playfair Display / Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap"
+        rel="stylesheet">
 
     <!-- FontAwesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,7 +61,10 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #ffffff;
@@ -64,6 +77,7 @@
             font-weight: 800;
             letter-spacing: 0.05em;
         }
+
         .section-italic-title {
             font-family: 'Newsreader', Georgia, serif;
             font-style: italic;
@@ -109,6 +123,7 @@
             min-height: 110px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
         .card-status-dark:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(39, 30, 109, 0.25);
@@ -126,11 +141,13 @@
             outline: none;
             transition: all 0.2s ease;
         }
+
         .form-pill-input:focus {
             background-color: #ffffff;
             border-color: #271e6d;
             box-shadow: 0 0 0 3px rgba(39, 30, 109, 0.10);
         }
+
         .form-pill-select {
             width: 100%;
             background-color: #f3f2fa;
@@ -151,6 +168,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
+
         .form-pill-select:focus {
             background-color: #ffffff;
             border-color: #271e6d;
@@ -169,6 +187,7 @@
             box-shadow: 0 4px 14px rgba(39, 30, 109, 0.25);
             transition: all 0.2s ease;
         }
+
         .btn-purple-action:hover {
             background-color: #1f1659;
             transform: translateY(-1px);
@@ -187,16 +206,39 @@
 
         /* Blinking dot animation */
         @keyframes dotBlink {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.3; transform: scale(0.75); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: scale(0.75);
+            }
         }
+
         .dot-blink {
             animation: dotBlink 1.2s ease-in-out infinite;
         }
 
         /* Smooth animation */
-        main { animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+        main {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
         /* Scroll-to-Top Button */
         #scrollTopBtn {
@@ -220,11 +262,13 @@
             transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
             pointer-events: none;
         }
+
         #scrollTopBtn.visible {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
         }
+
         #scrollTopBtn:hover {
             background: #1f1659;
             box-shadow: 0 8px 24px rgba(39, 30, 109, 0.45);
@@ -233,24 +277,27 @@
 
     @yield('styles')
 </head>
+
 <body class="min-h-screen flex flex-col bg-white text-slate-800 antialiased">
 
     <!-- Flash Notifications -->
     @if(session('success'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
-             class="fixed top-5 right-5 z-50 flex items-center gap-3 px-5 py-3.5 bg-white border border-emerald-200 rounded-2xl shadow-xl text-sm text-emerald-800 font-semibold max-w-sm">
+            class="fixed top-5 right-5 z-50 flex items-center gap-3 px-5 py-3.5 bg-white border border-emerald-200 rounded-2xl shadow-xl text-sm text-emerald-800 font-semibold max-w-sm">
             <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
             <span>{{ session('success') }}</span>
-            <button @click="show = false" class="ml-auto text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            <button @click="show = false" class="ml-auto text-gray-400 hover:text-gray-600"><i
+                    class="fa-solid fa-xmark"></i></button>
         </div>
     @endif
 
     @if(session('error'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 5000)"
-             class="fixed top-5 right-5 z-50 flex items-center gap-3 px-5 py-3.5 bg-white border border-red-200 rounded-2xl shadow-xl text-sm text-red-800 font-semibold max-w-sm">
+            class="fixed top-5 right-5 z-50 flex items-center gap-3 px-5 py-3.5 bg-white border border-red-200 rounded-2xl shadow-xl text-sm text-red-800 font-semibold max-w-sm">
             <i class="fa-solid fa-triangle-exclamation text-red-500 text-lg"></i>
             <span>{{ session('error') }}</span>
-            <button @click="show = false" class="ml-auto text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            <button @click="show = false" class="ml-auto text-gray-400 hover:text-gray-600"><i
+                    class="fa-solid fa-xmark"></i></button>
         </div>
     @endif
 
@@ -270,27 +317,28 @@
     </button>
 
     <script>
-        (function () {
-            // Auto scroll to top on every page load
-            if (history.scrollRestoration) {
-                history.scrollRestoration = 'manual';
-            }
-            window.scrollTo(0, 0);
-
-            const btn = document.getElementById('scrollTopBtn');
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
+            (function () {
+                // Auto scroll to top on every page load
+                if (history.scrollRestoration) {
+                    history.scrollRestoration = 'manual';
                 }
-            }, { passive: true });
-            btn.addEventListener('click', function () {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        })();
+                window.scrollTo(0, 0);
+
+                const btn = document.getElementById('scrollTopBtn');
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 300) {
+                        btn.classList.add('visible');
+                    } else {
+                        btn.classList.remove('visible');
+                    }
+                }, { passive: true });
+                btn.addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            })();
     </script>
 
     @yield('scripts')
 </body>
+
 </html>
