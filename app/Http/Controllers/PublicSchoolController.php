@@ -10,6 +10,7 @@ use App\Models\Zone;
 use App\Services\SchoolService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PublicSchoolController extends Controller
 {
@@ -62,22 +63,47 @@ class PublicSchoolController extends Controller
 
     public function register(RegisterSchoolRequest $request): JsonResponse
     {
-        $school = $this->schoolService->registerSchool(
-            $request->validated(),
-            $request->ip()
-        );
+        try {
+            $school = $this->schoolService->registerSchool(
+                $request->validated(),
+                $request->ip()
+            );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'School registration submitted successfully! Your application is under review.',
-            'code' => $school->code,
-            'school' => [
-                'id' => $school->id,
-                'name' => $school->name,
+            return response()->json([
+                'success' => true,
+                'message' => 'School registration submitted successfully! Your application is under review.',
                 'code' => $school->code,
-                'status' => strtoupper($school->status),
-            ],
-        ], 201);
+                'school' => [
+                    'id' => $school->id,
+                    'name' => $school->name,
+                    'code' => $school->code,
+                    'status' => strtoupper($school->status),
+                ],
+            ], 201);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('School registration DB error: ' . $e->getMessage());
+
+            // Duplicate SUIC code (unique constraint violation)
+            if ($e->errorInfo[1] === 1062) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This SUIC code is already registered. Please use a unique code.',
+                    'errors' => ['suic_code' => ['This SUIC code is already taken by another school.']],
+                ], 422);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'A database error occurred. Please check your input and try again.',
+            ], 500);
+        } catch (\Throwable $e) {
+            Log::error('School registration error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An unexpected error occurred. Please try again.',
+            ], 500);
+        }
     }
 
     public function getZones(Request $request): JsonResponse

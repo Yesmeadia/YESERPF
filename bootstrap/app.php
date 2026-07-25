@@ -26,7 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Return JSON for API routes or any XMLHttpRequest (fetch/AJAX)
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest',
         );
     })->create();

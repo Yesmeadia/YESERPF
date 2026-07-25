@@ -915,8 +915,17 @@
                     .then(async res => {
                         const text = await res.text();
                         let data;
-                        try { data = JSON.parse(text); }
-                        catch (_) { throw new Error('Server response error. Please try again.'); }
+                        try {
+                            data = JSON.parse(text);
+                        } catch (_) {
+                            if (res.status === 429) {
+                                throw new Error('Too many requests. Please wait a moment and try submitting again.');
+                            } else if (res.status === 419) {
+                                throw new Error('Session expired. Please refresh the page and try submitting again.');
+                            } else {
+                                throw new Error(`Server response error (${res.status}). Please verify your input and try again.`);
+                            }
+                        }
 
                         if (!res.ok) {
                             if (res.status === 422 && data.errors) {
