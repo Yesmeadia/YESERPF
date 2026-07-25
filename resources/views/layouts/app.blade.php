@@ -10,9 +10,10 @@
     <meta name="description" content="YES INDIA Schools ERP - School Registration and Status Management System.">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="icon" type="image/x-icon" sizes="32x32" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icon.png') }}?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icon.png') }}?v=2">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('icon.png') }}?v=2">
+    <link rel="apple-touch-icon" href="{{ asset('icon.png') }}?v=2">
 
     <!-- Google Fonts: Inter & Playfair Display / Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -341,20 +342,25 @@
     @if(request()->is('admin*') && auth()->check())
         <!-- Auto Lockout / Idle Timeout Warning Modal & Monitor -->
         <div x-data="autoLockout()" x-init="initTimer()" x-show="showWarning" x-cloak x-transition
-             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-4">
-                <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto text-2xl">
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <div
+                class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center space-y-4">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto text-2xl">
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-extrabold text-slate-900">Inactivity Warning</h3>
-                    <p class="text-xs text-slate-500 mt-1">Your session will expire soon due to inactivity. You will be automatically locked out in:</p>
+                    <p class="text-xs text-slate-500 mt-1">Your session will expire soon due to inactivity. You will be
+                        automatically locked out in:</p>
                 </div>
-                <div class="py-3 bg-slate-50 rounded-2xl border border-slate-200 text-2xl font-mono font-black text-[#271e6d]">
+                <div
+                    class="py-3 bg-slate-50 rounded-2xl border border-slate-200 text-2xl font-mono font-black text-[#271e6d]">
                     <span x-text="formattedCountdown"></span>
                 </div>
                 <div class="flex items-center gap-3 pt-2">
-                    <button @click="stayLoggedIn()" class="w-full py-2.5 px-4 bg-[#271e6d] hover:bg-[#1f1659] text-white rounded-xl text-xs font-bold transition-all shadow-md">
+                    <button @click="stayLoggedIn()"
+                        class="w-full py-2.5 px-4 bg-[#271e6d] hover:bg-[#1f1659] text-white rounded-xl text-xs font-bold transition-all shadow-md">
                         Keep Me Signed In
                     </button>
                 </div>
@@ -378,7 +384,7 @@
                     initTimer() {
                         const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
                         events.forEach(e => window.addEventListener(e, () => this.resetTimer(), { passive: true }));
-                        
+
                         this.intervalId = setInterval(() => {
                             this.idleTime++;
                             if (this.idleTime >= this.maxIdle) {
