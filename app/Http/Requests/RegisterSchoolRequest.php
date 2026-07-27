@@ -17,12 +17,16 @@ class RegisterSchoolRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'name'           => $this->name           ? strtoupper(trim($this->name))           : $this->name,
-            'principal_name' => $this->principal_name ? strtoupper(trim($this->principal_name)) : $this->principal_name,
-            'address'        => $this->address        ? strtoupper(trim($this->address))        : $this->address,
-            'suic_code'      => $this->suic_code      ? strtoupper(trim($this->suic_code))      : $this->suic_code,
-            'phone'          => $this->phone          ? trim($this->phone)                      : $this->phone,
-            'email'          => $this->email          ? strtolower(trim($this->email))          : $this->email,
+            'name'            => $this->name            ? strtoupper(trim($this->name))            : $this->name,
+            'principal_name'  => $this->principal_name  ? strtoupper(trim($this->principal_name))  : $this->principal_name,
+            'address'         => $this->address         ? strtoupper(trim($this->address))         : $this->address,
+            'suic_code'       => $this->suic_code       ? strtoupper(trim($this->suic_code))       : $this->suic_code,
+            'phone'           => $this->phone           ? trim($this->phone)                       : $this->phone,
+            'email'           => $this->email           ? strtolower(trim($this->email))           : $this->email,
+            'has_own_domain'  => strtolower(trim($this->has_own_domain ?? 'no')),
+            'wants_new_domain'=> strtolower(trim($this->wants_new_domain ?? 'no')),
+            'existing_domain' => $this->existing_domain ? trim($this->existing_domain) : null,
+            'desired_domain'  => $this->desired_domain  ? strtolower(trim($this->desired_domain)) : null,
         ]);
     }
 
@@ -39,6 +43,23 @@ class RegisterSchoolRequest extends FormRequest
             'address'                   => ['required', 'string', 'min:10', 'max:1000'],
             // SUIC: exactly 6 uppercase alphabetical letters & unique across all schools
             'suic_code'                 => ['required', 'string', 'size:6', 'regex:/^[A-Z]{6}$/', 'unique:schools,suic_code'],
+            // Domain fields
+            'has_own_domain'            => ['nullable', 'in:yes,no'],
+            'wants_new_domain'          => ['nullable', 'in:yes,no'],
+            'existing_domain'           => [
+                'nullable',
+                'string',
+                'max:255',
+                $this->has_own_domain === 'yes' ? 'required' : 'nullable',
+                'regex:/^(https?:\/\/)?(([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,})(:[0-9]+)?(\/.*)?$/',
+            ],
+            'desired_domain'            => [
+                'nullable',
+                'string',
+                'max:255',
+                $this->wants_new_domain === 'yes' ? 'required' : 'nullable',
+                'regex:/^([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}$/',
+            ],
             // Students (gender-wise)
             'male_students'             => ['required', 'integer', 'min:0', 'max:999999'],
             'female_students'           => ['required', 'integer', 'min:0', 'max:999999'],

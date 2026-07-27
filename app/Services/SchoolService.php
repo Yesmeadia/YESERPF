@@ -59,6 +59,23 @@ class SchoolService
         return $school;
     }
 
+    public function updateSchool(int $schoolId, array $data, ?int $userId = null, ?string $ipAddress = null): School
+    {
+        $this->schoolRepository->update($schoolId, $data);
+
+        $school = $this->schoolRepository->findById($schoolId);
+
+        ActivityLog::create([
+            'user_id'   => $userId ?? auth()->id(),
+            'school_id' => $school->id,
+            'action'    => 'UPDATE',
+            'description' => "School '{$school->name}' details updated by admin.",
+            'ip_address' => $ipAddress,
+        ]);
+
+        return $school;
+    }
+
     public function findSchool(int $id): ?School
     {
         return $this->schoolRepository->findById($id);

@@ -40,6 +40,9 @@ class School extends Model
         'phone',
         'address',
         'suic_code',
+        // Domain fields
+        'existing_domain',
+        'desired_domain',
         // Students
         'male_students',
         'female_students',

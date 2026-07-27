@@ -15,11 +15,11 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('icon.png') }}?v=2">
     <link rel="apple-touch-icon" href="{{ asset('icon.png') }}?v=2">
 
-    <!-- Google Fonts: Inter & Playfair Display / Serif -->
+    <!-- Google Fonts: Figtree, Inter & Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&display=swap"
         rel="stylesheet">
 
     <!-- FontAwesome 6 -->
@@ -34,7 +34,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        sans: ['Figtree', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
                         serif: ['Newsreader', 'Georgia', 'serif'],
                     },
                     colors: {
@@ -67,8 +67,9 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
+            font-family: 'Figtree', 'Inter', sans-serif;
+            font-weight: 400;
+            background-color: #f8f7fc;
             color: #1e1b4b;
         }
 
@@ -224,6 +225,72 @@
             animation: dotBlink 1.2s ease-in-out infinite;
         }
 
+        /* Pulse Radar Animation */
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        .status-pulse-operational {
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlowAmber {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(245, 158, 11, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+        .status-pulse-maintenance {
+            animation: pulseGlowAmber 2s infinite;
+        }
+
+        @keyframes pulseGlowRed {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        .status-pulse-outage {
+            animation: pulseGlowRed 2s infinite;
+        }
+
+        /* Uptime Bar Hover Tooltip */
+        .uptime-day-bar {
+            height: 32px;
+            width: 100%;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .uptime-day-bar:hover {
+            transform: scaleY(1.2);
+            filter: brightness(1.15);
+        }
+
+        /* Hero Glassmorphism */
+        .glass-status-hero {
+            background: linear-gradient(135deg, rgba(39, 30, 109, 0.98) 0%, rgba(25, 18, 77, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Smooth animation */
         main {
             animation: fadeIn 0.3s ease;
@@ -279,7 +346,7 @@
     @yield('styles')
 </head>
 
-<body class="min-h-screen flex flex-col bg-white text-slate-800 antialiased">
+<body class="min-h-screen flex flex-col bg-[#f8f7fc] text-slate-800 antialiased">
 
     <!-- Flash Notifications -->
     @if(session('success'))

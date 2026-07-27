@@ -1,347 +1,396 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - YES INDIA SCHOOLS ERP Admin')
+@section('title', 'Executive Dashboard — YES INDIA SCHOOLS ERP')
 
 @section('styles')
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f8fafc !important;
-            color: #1e293b !important;
-            font-family: 'Inter', sans-serif;
+            background-color: #f9f9ff !important;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 400;
+            color: #111c2d;
         }
 
-        /* Clean Card Utility */
-        .clean-card {
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        /* Premium Cards */
+        .premium-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 18px;
-            padding: 1.25rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .premium-card:hover {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
         }
 
-        .clean-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        /* Table Styles */
+        .dash-table th {
+            padding: 10px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #505f76;
+            border-bottom: 1px solid #e7eeff;
         }
-
-        .kpi-num {
-            font-size: 2.1rem;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -0.02em;
+        .dash-table td {
+            padding: 14px 12px;
+            font-size: 14px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e7eeff;
         }
-
-        /* Custom Scrollbar */
-        .custom-scroll::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .custom-scroll::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 8px;
-        }
-
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 8px;
-        }
+        .dash-table tbody tr:last-child td { border-bottom: none; }
+        .dash-table tbody tr:hover { background: #f0f3ff; transition: background 0.15s; }
 
         /* Status Badges */
-        .badge-on_going {
-            background: #d1fae5;
-            color: #047857;
+        .badge-on_going        { background: rgba(79,70,229,0.08); color: #4f46e5; }
+        .badge-registered      { background: rgba(217,119,6,0.08); color: #d97706; }
+        .badge-trial_running   { background: rgba(16,185,129,0.08); color: #10b981; }
+        .badge-under_construction { background: rgba(186,26,26,0.08); color: #ba1a1a; }
+
+        /* Donut SVG Chart */
+        .donut-ring {
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .badge-registered {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        .badge-trial_running {
-            background: #f3e8ff;
-            color: #7e22ce;
-        }
-
-        .badge-under_construction {
-            background: #fef9c3;
-            color: #a16207;
-        }
+        /* Slim Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dee8ff; border-radius: 10px; }
     </style>
 @endsection
 
 @section('content')
 
-    <!-- Sidebar Component -->
     <x-admin-sidebar active="dashboard" />
 
-    <!-- Main Content Area -->
-    <div class="lg:pl-64 min-h-screen flex flex-col justify-between">
+    <div class="lg:pl-64 min-h-screen" style="background-color: #f9f9ff;">
 
-        <!-- Page Content Container -->
-        <div class="p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto">
+        <div class="p-5 md:p-8 max-w-[1440px] mx-auto w-full">
 
-            <!-- Top Header Banner -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+            {{-- ══════════════════════════════════════════ --}}
+            {{-- HERO HEADER                               --}}
+            {{-- ══════════════════════════════════════════ --}}
+            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-extrabold text-[#271e6d] tracking-tight flex items-center gap-2.5">
-                        <span>Executive Dashboard</span>
-                    </h1>
-                    <p class="text-xs text-slate-500 mt-1">Overview of school registrations, status metrics, and regional
-                        data.</p>
+                    <h2 class="text-[32px] font-semibold tracking-tight text-[#00030d] leading-10">Executive Overview</h2>
+                    <p class="text-base text-[#505f76] mt-1">Operational real-time data for the YES Schools network.</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('home') }}" target="_blank"
-                        class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all inline-flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-compass text-indigo-500"></i>
-                        <span>Public Site</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
-                    </a>
-                    <a href="{{ route('register') }}" target="_blank"
-                        class="btn-purple-action text-xs px-4 py-2 inline-flex items-center gap-2 shadow-md">
-                        <i class="fa-solid fa-circle-plus text-xs"></i>
-                        <span>New Campus</span>
+                    <div class="flex items-center gap-2 px-4 py-2 bg-white border border-[#c5c6ce] rounded-lg text-sm text-[#505f76] shadow-sm">
+                        <span class="material-symbols-outlined text-sm" style="font-size:18px;">calendar_today</span>
+                        <span id="liveDateTime" class="text-xs font-medium">Loading…</span>
+                    </div>
+                    <a href="{{ route('register') }}"
+                       class="flex items-center gap-2 px-4 py-2 bg-[#00030d] text-white rounded-lg text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-sm" style="font-size:18px;">add</span>
+                        New School
                     </a>
                 </div>
             </div>
 
-            <!-- 5 KPI Metric Summary Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {{-- ══════════════════════════════════════════ --}}
+            {{-- KPI METRIC CARDS                          --}}
+            {{-- ══════════════════════════════════════════ --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
 
-                <!-- Total Schools Card -->
-                <div class="clean-card border-t-2 border-t-indigo-600">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Schools</span>
-                        <div
-                            class="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[#271e6d] shadow-sm">
-                            <i class="fa-solid fa-building-columns text-sm"></i>
-                        </div>
+                {{-- Total Schools --}}
+                <div class="premium-card p-6 rounded-xl border border-[#f1f5f9] shadow-sm flex flex-col items-center text-center gap-4 min-h-[140px] justify-center">
+                    <div class="w-12 h-12 flex items-center justify-center bg-[#dee8ff] rounded-full">
+                        <span class="material-symbols-outlined text-[#00030d]">corporate_fare</span>
                     </div>
-                    <div class="kpi-num text-[#271e6d] mb-1">{{ number_format($status_counts['total']) }}</div>
-                    <div class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-database text-[10px] text-indigo-400"></i> Total database records
+                    <div>
+                        <p class="text-[11px] font-bold tracking-[0.06em] uppercase text-[#505f76] mb-1">Total Schools</p>
+                        <p class="text-2xl font-bold text-[#111c2d]">{{ number_format($status_counts['total']) }}</p>
                     </div>
                 </div>
 
-                <!-- On Going Card -->
-                <div class="clean-card border-t-2 border-t-emerald-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-emerald-700 font-bold uppercase tracking-wider">On Going</span>
-                        <div
-                            class="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
-                            <i class="fa-solid fa-circle-check text-sm"></i>
-                        </div>
+                {{-- On Going --}}
+                <div class="premium-card p-6 rounded-xl border border-[#f1f5f9] shadow-sm flex flex-col items-center text-center gap-4 min-h-[140px] justify-center">
+                    <div class="w-12 h-12 flex items-center justify-center bg-[#d4e3ff] rounded-full">
+                        <span class="material-symbols-outlined text-[#505f76]">sync</span>
                     </div>
-                    <div class="kpi-num text-emerald-600 mb-1">{{ number_format($status_counts['approved']) }}</div>
-                    <div class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-dot text-[10px] text-emerald-500 animate-pulse"></i> Active operational
+                    <div>
+                        <p class="text-[11px] font-bold tracking-[0.06em] uppercase text-[#505f76] mb-1">On Going</p>
+                        <p class="text-2xl font-bold text-[#111c2d]">{{ number_format($status_counts['approved']) }}</p>
                     </div>
                 </div>
 
-                <!-- Registered Card -->
-                <div class="clean-card border-t-2 border-t-rose-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-rose-700 font-bold uppercase tracking-wider">Registered</span>
-                        <div
-                            class="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 shadow-sm">
-                            <i class="fa-solid fa-clock-rotate-left text-sm"></i>
-                        </div>
+                {{-- Registered --}}
+                <div class="premium-card p-6 rounded-xl border border-[#f1f5f9] shadow-sm flex flex-col items-center text-center gap-4 min-h-[140px] justify-center">
+                    <div class="w-12 h-12 flex items-center justify-center bg-[#e7eeff] rounded-full">
+                        <span class="material-symbols-outlined text-[#45474d]">how_to_reg</span>
                     </div>
-                    <div class="kpi-num text-rose-600 mb-1">{{ number_format($status_counts['pending']) }}</div>
-                    <div class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-user-plus text-[10px] text-rose-400"></i> Newly registered
+                    <div>
+                        <p class="text-[11px] font-bold tracking-[0.06em] uppercase text-[#505f76] mb-1">Registered</p>
+                        <p class="text-2xl font-bold text-[#111c2d]">{{ number_format($status_counts['pending']) }}</p>
                     </div>
                 </div>
 
-                <!-- Trial Running Card -->
-                <div class="clean-card border-t-2 border-t-purple-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-purple-700 font-bold uppercase tracking-wider">Trial Running</span>
-                        <div
-                            class="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-sm">
-                            <i class="fa-solid fa-flask-vial text-sm"></i>
-                        </div>
+                {{-- Trial Phase --}}
+                <div class="premium-card p-6 rounded-xl border border-[#f1f5f9] shadow-sm flex flex-col items-center text-center gap-4 min-h-[140px] justify-center">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-full" style="background:rgba(217,119,6,0.1);">
+                        <span class="material-symbols-outlined" style="color:#d97706;">experiment</span>
                     </div>
-                    <div class="kpi-num text-purple-600 mb-1">{{ number_format($status_counts['under_review']) }}</div>
-                    <div class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-vial-circle-check text-[10px] text-purple-400"></i> In evaluation trial
+                    <div>
+                        <p class="text-[11px] font-bold tracking-[0.06em] uppercase text-[#505f76] mb-1">Trial Phase</p>
+                        <p class="text-2xl font-bold text-[#111c2d]">{{ number_format($status_counts['under_review']) }}</p>
                     </div>
                 </div>
 
-                <!-- Under Construction Card -->
-                <div class="clean-card border-t-2 border-t-amber-500">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-amber-700 font-bold uppercase tracking-wider">Construction</span>
-                        <div
-                            class="w-10 h-10 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
-                            <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
-                        </div>
+                {{-- Maintenance --}}
+                <div class="premium-card p-6 rounded-xl border border-[#f1f5f9] shadow-sm flex flex-col items-center text-center gap-4 min-h-[140px] justify-center">
+                    <div class="w-12 h-12 flex items-center justify-center bg-[#ffdad6] rounded-full">
+                        <span class="material-symbols-outlined text-[#ba1a1a]">build</span>
                     </div>
-                    <div class="kpi-num text-amber-600 mb-1">{{ number_format($status_counts['rejected']) }}</div>
-                    <div class="text-[11px] text-slate-400 flex items-center gap-1">
-                        <i class="fa-solid fa-compass-drafting text-[10px] text-amber-400"></i> Work in progress
+                    <div>
+                        <p class="text-[11px] font-bold tracking-[0.06em] uppercase text-[#505f76] mb-1">Maintenance</p>
+                        <p class="text-2xl font-bold text-[#111c2d]">{{ number_format($status_counts['rejected']) }}</p>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Analytics Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {{-- ══════════════════════════════════════════ --}}
+            {{-- CHARTS ROW                                --}}
+            {{-- ══════════════════════════════════════════ --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
 
-                <!-- Donut Chart -->
-                <div class="lg:col-span-5 clean-card flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
-                        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-indigo-600 text-sm"></i>
-                            <span>Status Breakdown</span>
-                        </h3>
-                        <span
-                            class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
-                            Live Data
-                        </span>
+                {{-- Status Distribution Donut --}}
+                <div class="premium-card p-6 rounded-xl flex flex-col bg-white">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-[#111c2d]">Status Distribution</h3>
+                        <a href="{{ route('admin.schools.index') }}" class="text-xs font-bold uppercase tracking-widest text-[#00030d] hover:underline">View All</a>
                     </div>
-                    <div id="statusChart" class="h-60 flex items-center justify-center"></div>
+                    <div class="relative flex-1 flex items-center justify-center min-h-[280px]">
+                        @php
+                            $total = max($status_counts['total'], 1);
+                            $approved = $status_counts['approved'];
+                            $pending  = $status_counts['pending'];
+                            $review   = $status_counts['under_review'];
+                            $rejected = $status_counts['rejected'];
+                            $circ = 2 * M_PI * 80; // circumference ~502.65
+
+                            // Compute offsets (segments stack as stroke-dashoffset)
+                            $seg1 = ($approved / $total) * $circ;
+                            $seg2 = ($pending  / $total) * $circ;
+                            $seg3 = ($review   / $total) * $circ;
+
+                            $off1 = $circ - $seg1;
+                            $off2 = $circ - $seg2 + $off1;
+                            $off3 = $circ - $seg3 + $off2 - ($circ - $seg2);
+                        @endphp
+                        <svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 192 192">
+                            {{-- Track --}}
+                            <circle cx="96" cy="96" r="80" fill="transparent" stroke="#f0f3ff" stroke-width="20"/>
+                            {{-- On Going (indigo) --}}
+                            <circle cx="96" cy="96" r="80" fill="transparent"
+                                stroke="#4f46e5"
+                                stroke-width="20"
+                                stroke-dasharray="{{ number_format($circ, 2) }}"
+                                stroke-dashoffset="{{ number_format($circ - $seg1, 2) }}"
+                                class="donut-ring"/>
+                            {{-- Registered (amber) --}}
+                            <circle cx="96" cy="96" r="80" fill="transparent"
+                                stroke="#d97706"
+                                stroke-width="20"
+                                stroke-dasharray="{{ number_format($seg2, 2) }} {{ number_format($circ - $seg2, 2) }}"
+                                stroke-dashoffset="{{ number_format($circ - $seg1, 2) }}"
+                                class="donut-ring"/>
+                            {{-- Trial (emerald) --}}
+                            <circle cx="96" cy="96" r="80" fill="transparent"
+                                stroke="#10b981"
+                                stroke-width="20"
+                                stroke-dasharray="{{ number_format($status_counts['under_review'] / $total * $circ, 2) }} {{ number_format($circ, 2) }}"
+                                stroke-dashoffset="{{ number_format($circ - $seg1 - $seg2, 2) }}"
+                                class="donut-ring"/>
+                            {{-- Maintenance (red) --}}
+                            <circle cx="96" cy="96" r="80" fill="transparent"
+                                stroke="#ba1a1a"
+                                stroke-width="20"
+                                stroke-dasharray="{{ number_format($status_counts['rejected'] / $total * $circ, 2) }} {{ number_format($circ, 2) }}"
+                                stroke-dashoffset="{{ number_format($circ - $seg1 - $seg2 - ($review / $total * $circ), 2) }}"
+                                class="donut-ring"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-3xl font-bold text-[#111c2d]">{{ number_format($status_counts['total']) }}</span>
+                            <span class="text-xs text-[#505f76] uppercase tracking-widest mt-0.5">Units</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-[#4f46e5]"></div>
+                            <span class="text-sm text-[#505f76]">On Going</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-[#d97706]"></div>
+                            <span class="text-sm text-[#505f76]">Registered</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-[#10b981]"></div>
+                            <span class="text-sm text-[#505f76]">Trial Phase</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-[#ba1a1a]"></div>
+                            <span class="text-sm text-[#505f76]">Maintenance</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Bar Chart -->
-                <div class="lg:col-span-7 clean-card flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-slate-100">
-                        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-map-location-dot text-indigo-600 text-sm"></i>
-                            <span>Top States Volume</span>
-                        </h3>
-                        <span class="text-[10px] font-semibold text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-chart-simple"></i> Regional Statistics
-                        </span>
+                {{-- State & Zone Distribution --}}
+                <div class="premium-card p-6 rounded-xl flex flex-col bg-white">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-[#111c2d]">State Distribution</h3>
+                        <div class="flex bg-[#f0f3ff] p-1 rounded-lg">
+                            <button class="px-3 py-1 bg-white shadow-sm rounded-md text-xs font-semibold text-[#00030d]">State</button>
+                            <button class="px-3 py-1 text-xs font-semibold text-[#505f76] hover:text-[#111c2d] transition-colors">Zone</button>
+                        </div>
                     </div>
-                    <div id="stateChart" class="h-60"></div>
+                    <div class="flex-1 space-y-4 py-2">
+                        @php
+                            $topStates = collect($state_distribution)->sortByDesc('total')->take(6);
+                            $maxState  = $topStates->max('total') ?: 1;
+                            $barColors = ['#4f46e5','#10b981','#d97706','#ba1a1a','#505f76','#00030d'];
+                        @endphp
+                        @foreach($topStates as $idx => $st)
+                        @php $pct = round(($st->total / $maxState) * 100); @endphp
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-[#111c2d] font-medium">{{ $st->state_name }}</span>
+                                <span class="font-bold text-[#111c2d]">{{ $st->total }}</span>
+                            </div>
+                            <div class="w-full bg-[#f0f3ff] h-2 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-700"
+                                     style="width: {{ $pct }}%; background: {{ $barColors[$idx % count($barColors)] }};"></div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
 
             </div>
 
-            <!-- Recent Table & Logs -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                <!-- Recent Table -->
-                <div class="lg:col-span-8 clean-card">
-                    <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-slate-100">
-                        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-rectangle-list text-indigo-600 text-sm"></i>
-                            <span>Recently Registered</span>
-                        </h3>
-                        <a href="{{ route('admin.schools.index') }}"
-                            class="text-xs font-bold text-[#271e6d] hover:text-indigo-600 transition-colors inline-flex items-center gap-1">
-                            <span>View Datatable</span>
-                            <i class="fa-solid fa-arrow-right text-[11px]"></i>
-                        </a>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs">
-                            <thead>
-                                <tr
-                                    class="text-slate-500 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider bg-slate-50/50">
-                                    <th class="py-2.5 px-3">
-                                        <div class="flex items-center gap-1.5">
-                                            <i class="fa-solid fa-barcode text-slate-400"></i> SUIC Code
-                                        </div>
-                                    </th>
-                                    <th class="py-2.5 px-3">
-                                        <div class="flex items-center gap-1.5">
-                                            <i class="fa-solid fa-school text-slate-400"></i> School Name
-                                        </div>
-                                    </th>
-                                    <th class="py-2.5 px-3">
-                                        <div class="flex items-center gap-1.5">
-                                            <i class="fa-solid fa-location-dot text-slate-400"></i> State
-                                        </div>
-                                    </th>
-                                    <th class="py-2.5 px-3">
-                                        <div class="flex items-center gap-1.5">
-                                            <i class="fa-solid fa-shield-halved text-slate-400"></i> Status
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-slate-700">
-                                @forelse($recent_schools as $s)
-                                    <tr class="hover:bg-slate-50/80 transition-colors">
-                                        <td class="py-3 px-3 font-mono font-bold text-[#271e6d]">
-                                            {{ $s->suic_code ?? $s->code }}
-                                        </td>
-                                        <td class="py-3 px-3 font-semibold text-slate-900">
-                                            {{ $s->name }}
-                                        </td>
-                                        <td class="py-3 px-3 text-slate-500">
-                                            {{ $s->state->name ?? 'N/A' }}
-                                        </td>
-                                        <td class="py-3 px-3">
-                                            <span
-                                                class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide badge-{{ $s->status }}">
-                                                {{ str_replace('_', ' ', $s->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="py-8 text-center text-slate-400">
-                                            <div class="space-y-1">
-                                                <i class="fa-solid fa-folder-open text-2xl text-slate-300"></i>
-                                                <p>No school records found.</p>
+            {{-- ══════════════════════════════════════════ --}}
+            {{-- RECENTLY REGISTERED SCHOOLS TABLE         --}}
+            {{-- ══════════════════════════════════════════ --}}
+            <div class="premium-card rounded-xl bg-white mb-8">
+                <div class="flex justify-between items-center px-6 py-5 border-b border-[#e7eeff]">
+                    <h3 class="text-lg font-bold text-[#111c2d]">Recently Registered Schools</h3>
+                    <a href="{{ route('admin.schools.index') }}"
+                       class="text-xs font-bold uppercase tracking-widest text-[#00030d] hover:underline">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left dash-table">
+                        <thead>
+                            <tr class="border-b border-[#e7eeff]">
+                                <th>SUIC Code</th>
+                                <th>School & Principal</th>
+                                <th>State</th>
+                                <th>Status</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#e7eeff]">
+                            @forelse($recent_schools as $s)
+                            <tr class="hover:bg-[#f0f3ff] transition-colors">
+                                <td class="font-bold text-[#00030d] text-sm">{{ $s->suic_code ?? $s->code }}</td>
+                                <td>
+                                    <p class="text-sm font-bold text-[#111c2d]">
+                                        <a href="{{ route('admin.schools.show', $s->id) }}" class="hover:text-[#4f46e5] transition-colors">{{ $s->name }}</a>
+                                    </p>
+                                    <p class="text-xs text-[#505f76]">{{ $s->principal_name ?? 'N/A' }}</p>
+                                </td>
+                                <td class="text-sm text-[#45474d]">{{ $s->state->name ?? 'N/A' }}</td>
+                                <td>
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full badge-{{ $s->status }}">
+                                        {{ ucwords(str_replace('_', ' ', $s->status)) }}
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="relative inline-block text-left" x-data="{ open: false }" @click.away="open = false">
+                                        <button @click="open = !open" type="button"
+                                                class="w-8 h-8 rounded-lg text-[#505f76] bg-[#f0f3ff] hover:bg-[#dee8ff] flex items-center justify-center transition-all ml-auto">
+                                            <span class="material-symbols-outlined" style="font-size:18px;">more_vert</span>
+                                        </button>
+                                        <div x-show="open" x-cloak
+                                             x-transition:enter="transition ease-out duration-100"
+                                             x-transition:enter-start="opacity-0 scale-95"
+                                             x-transition:enter-end="opacity-100 scale-100"
+                                             x-transition:leave="transition ease-in duration-75"
+                                             x-transition:leave-start="opacity-100 scale-100"
+                                             x-transition:leave-end="opacity-0 scale-95"
+                                             class="absolute right-0 mt-1.5 w-44 rounded-xl bg-white shadow-xl border border-[#e7eeff] py-1 z-50 text-xs divide-y divide-[#f0f3ff]">
+                                            <div class="py-1">
+                                                <a href="{{ route('admin.schools.show', $s->id) }}"
+                                                   class="flex items-center gap-2 px-4 py-2.5 hover:bg-[#f0f3ff] text-[#45474d] hover:text-[#4f46e5]">
+                                                    <span class="material-symbols-outlined" style="font-size:16px;">visibility</span> View Record
+                                                </a>
+                                                <a href="{{ route('admin.schools.edit', $s->id) }}"
+                                                   class="flex items-center gap-2 px-4 py-2.5 hover:bg-[#f0f3ff] text-[#45474d] hover:text-[#d97706]">
+                                                    <span class="material-symbols-outlined" style="font-size:16px;">edit</span> Edit Profile
+                                                </a>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="py-12 text-center text-[#505f76] text-sm font-normal">No recent school records found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Activity Logs -->
-                <div class="lg:col-span-4 clean-card flex flex-col">
-                    <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-slate-100">
-                        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-timeline text-indigo-600 text-sm"></i>
-                            <span>Audit Log Activity</span>
-                        </h3>
-                        <span class="text-[10px] font-semibold text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-bolt text-amber-500"></i> Latest
-                        </span>
-                    </div>
-
-                    <div class="space-y-2.5 max-h-72 overflow-y-auto pr-1 custom-scroll flex-grow">
-                        @forelse($recent_activities as $act)
-                            <div
-                                class="p-3 rounded-2xl bg-slate-50/80 border border-slate-200/70 text-xs space-y-1 hover:bg-slate-100/80 transition-colors">
-                                <div class="text-slate-800 font-medium leading-snug flex items-start gap-2">
-                                    <i class="fa-solid fa-circle-dot text-indigo-500 text-[8px] shrink-0 mt-1"></i>
-                                    <span>{{ $act->description }}</span>
-                                </div>
-                                <div
-                                    class="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-200/50">
-                                    <span class="flex items-center gap-1">
-                                        <i class="fa-solid fa-clock text-[9px]"></i> {{ $act->created_at->diffForHumans() }}
-                                    </span>
-                                    <span class="font-mono text-slate-500 flex items-center gap-1">
-                                        <i class="fa-solid fa-network-wired text-[9px]"></i>
-                                        {{ $act->ip_address ?? '127.0.0.1' }}
-                                    </span>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="text-center py-10 text-slate-400 text-xs space-y-1.5">
-                                <i class="fa-solid fa-clock-rotate-left text-2xl text-slate-300"></i>
-                                <p>No activity logs recorded.</p>
-                            </div>
-                        @endforelse
-                    </div>
+            {{-- ══════════════════════════════════════════ --}}
+            {{-- RECENT ACTIVITY TABLE                     --}}
+            {{-- ══════════════════════════════════════════ --}}
+            <div class="premium-card rounded-xl bg-white mb-8">
+                <div class="flex justify-between items-center px-6 py-5 border-b border-[#e7eeff]">
+                    <h3 class="text-lg font-bold text-[#111c2d]">Recent Activity</h3>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#505f76]">Audit Logs</span>
                 </div>
-
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left dash-table">
+                        <thead>
+                            <tr class="border-b border-[#e7eeff]">
+                                <th>Activity</th>
+                                <th>Source</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#e7eeff]">
+                            @forelse($recent_activities as $act)
+                            <tr class="hover:bg-[#f0f3ff] transition-colors">
+                                <td class="text-sm font-bold text-[#111c2d]">{{ $act->description }}</td>
+                                <td class="text-sm text-[#45474d]">{{ $act->ip_address ?? 'Internal' }}</td>
+                                <td class="text-sm text-[#505f76]">{{ $act->created_at->diffForHumans() }}</td>
+                                <td>
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full" style="background:rgba(16,185,129,0.08);color:#10b981;">
+                                        Logged
+                                    </span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="py-12 text-center text-[#505f76] text-sm font-normal">No audit activity logged.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
 
-        <!-- Admin Footer -->
         <x-admin-footer />
 
     </div>
@@ -349,41 +398,23 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const opts = { theme: { mode: 'light' }, chart: { background: 'transparent', fontFamily: 'Inter, sans-serif' } };
+        // Live Date/Time
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveDateTime').textContent = now.toLocaleString('en-IN', {
+                weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
+            });
+        }
+        updateClock();
+        setInterval(updateClock, 60000);
 
-            new ApexCharts(document.querySelector('#statusChart'), {
-                ...opts,
-                series: [
-                {{ $status_counts['approved'] }},
-                {{ $status_counts['pending'] }},
-                {{ $status_counts['under_review'] }},
-                    {{ $status_counts['rejected'] }}
-                ],
-                labels: ['On Going', 'Registered', 'Trial Running', 'Under Construction'],
-                colors: ['#10b981', '#ef4444', '#a855f7', '#eab308'],
-                chart: { ...opts.chart, type: 'donut', height: 230 },
-                stroke: { width: 2, colors: ['#ffffff'] },
-                legend: { position: 'bottom', labels: { colors: '#475569' }, fontSize: '11px' },
-                dataLabels: { enabled: true }
-            }).render();
-
-            const sd = @json($state_distribution);
-            new ApexCharts(document.querySelector('#stateChart'), {
-                ...opts,
-                series: [{ name: 'Schools', data: sd.map(i => i.total) }],
-                chart: { ...opts.chart, type: 'bar', height: 230, toolbar: { show: false } },
-                colors: ['#271e6d'],
-                plotOptions: { bar: { borderRadius: 6, columnWidth: '40%' } },
-                xaxis: {
-                    categories: sd.map(i => i.state_name),
-                    labels: { style: { colors: '#475569', fontSize: '11px' } }
-                },
-                yaxis: { labels: { style: { colors: '#64748b' } } },
-                grid: { borderColor: '#f1f5f9' }
-            }).render();
+        // Card hover interaction
+        document.querySelectorAll('.premium-card').forEach(card => {
+            card.addEventListener('mousedown', () => card.style.transform = 'scale(0.99)');
+            card.addEventListener('mouseup',   () => card.style.transform = 'translateY(-2px)');
+            card.addEventListener('mouseleave',() => card.style.transform = 'translateY(0)');
         });
     </script>
 @endsection

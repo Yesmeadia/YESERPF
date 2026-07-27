@@ -18,8 +18,7 @@
             <img src="{{ asset('logo.png') }}" alt="YES INDIA FOUNDATION" class="h-14 w-auto object-contain">
             <!-- Description -->
             <p class="text-sm text-gray-500 leading-relaxed max-w-md">
-                Empowering institutions through specialized ERP registration and accreditation systems across India.
-                YES INDIA Make an Excellence India.
+                YES INDIA MAKE AN EXCELLENCE INDIA.
             </p>
         </div>
 
@@ -33,9 +32,43 @@
                 <span class="text-gray-300">&bull;</span>
                 <a href="#" class="hover:text-gray-600 transition-colors">Terms of Service</a>
                 <span class="text-gray-300">&bull;</span>
-                <span class="inline-flex items-center gap-1.5 text-gray-500 font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    India
+                <span x-data="{ location: 'Detecting Location...' }" x-init="
+                        fetch('https://ipinfo.io/json')
+                            .then(res => res.json())
+                            .then(data => {
+                                let countryName = data.country;
+                                try {
+                                    if (data.country) {
+                                        countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(data.country);
+                                    }
+                                } catch (e) {}
+                                if (data.city && countryName) {
+                                    location = `${data.city}, ${countryName}`;
+                                } else if (countryName) {
+                                    location = countryName;
+                                } else {
+                                    location = 'Live Location Active';
+                                }
+                            })
+                            .catch(() => {
+                                fetch('https://ipwho.is/')
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.city && data.country) {
+                                            location = `${data.city}, ${data.country}`;
+                                        } else if (data.country) {
+                                            location = data.country;
+                                        } else {
+                                            location = 'Live Location Active';
+                                        }
+                                    })
+                                    .catch(() => {
+                                        location = 'Live Location Active';
+                                    });
+                            });
+                      " class="inline-flex items-center gap-1.5 text-gray-500 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 dot-blink"></span>
+                    <span x-text="location">Detecting Location...</span>
                 </span>
             </div>
         </div>

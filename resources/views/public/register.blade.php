@@ -27,159 +27,195 @@
         </div>
     </div>
 
-    <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <div class="py-6 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8 font-sans font-normal text-slate-800">
 
-        <!-- Header Logo & Title -->
-        <div class="text-center space-y-5">
-            <!-- YES INDIA FOUNDATION Logo -->
-            <div class="flex items-center justify-center">
-                <img src="{{ asset('logo.png') }}" alt="YES INDIA FOUNDATION" class="h-16 sm:h-20 w-auto object-contain">
-            </div>
-
-            <!-- Title -->
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black title-brand uppercase tracking-wider">
-                YES INDIA SCHOOLS ERP
+        <!-- ==================== HEADER BAR ==================== -->
+        <div class="flex items-center justify-between pt-2 pb-1">
+            <h1 class="text-base sm:text-lg font-bold text-[#1f1659] tracking-wider uppercase font-sans">
+                YES INDIA SCHOOLS REGISTRATION PORTAL
             </h1>
+            <div
+                class="flex items-center gap-2 text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-widest font-sans">
+                <span
+                    class="w-2 h-2 rounded-full {{ $registration_enabled === '1' ? 'bg-emerald-500 dot-blink' : 'bg-rose-500' }}"></span>
+                <span>{{ $registration_enabled === '1' ? 'LIVE MONITORING' : 'REGISTRATIONS PAUSED' }}</span>
+            </div>
+        </div>
 
-            <!-- Subtitle Badge -->
-            <div>
-                <div class="badge-status-top shadow-md">
-                    <span class="dot-indicator-green dot-blink"></span>
-                    <span>School ERP Registration &amp; Status Management System</span>
+        @php
+            $isLive = $registration_enabled === '1';
+            $bannerBg = $isLive ? 'bg-[#3af0a4]' : 'bg-rose-600';
+            $textColor = $isLive ? 'text-[#044e37]' : 'text-white';
+            $subtextColor = $isLive ? 'text-[#065f46]' : 'text-rose-100';
+            $iconBg = $isLive ? 'bg-[#044e37]' : 'bg-rose-950/40';
+            $iconColor = $isLive ? 'text-[#3af0a4]' : 'text-rose-200';
+            $statusText = $isLive ? 'ONLINE' : 'OFFLINE';
+            $statusColor = $isLive ? 'text-[#044e37]' : 'text-white';
+            $statusLabel = $isLive ? 'STATUS PORTAL' : 'REGISTRATION STATUS';
+        @endphp
+
+        <!-- ==================== HERO TOPIC BANNER (REGISTRATION) ==================== -->
+        <div
+            class="{{ $bannerBg }} rounded-2xl p-6 sm:p-7 {{ $textColor }} flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-sm transition-all duration-300">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-10 h-10 rounded-full {{ $iconBg }} {{ $iconColor }} flex items-center justify-center text-lg font-bold shrink-0">
+                    <i class="fa-solid {{ $isLive ? 'fa-id-card' : 'fa-ban' }}"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold tracking-tight leading-tight">
+                        Institutional Accreditation &amp; Registration Portal
+                    </h2>
+                    <p class="text-xs sm:text-sm font-normal {{ $subtextColor }} mt-0.5">
+                        @if($isLive)
+                            Submit institutional credentials for ERP status tracking, domain verification, &amp; zone
+                            allocation.
+                        @else
+                            {{ $registration_disabled_notice }}
+                        @endif
+                    </p>
+                </div>
+            </div>
+            <div class="text-left sm:text-right shrink-0">
+                <div class="text-[10px] font-bold uppercase tracking-widest {{ $subtextColor }}">
+                    {{ $statusLabel }}
+                </div>
+                <div class="text-xl sm:text-2xl font-normal font-mono {{ $statusColor }} mt-0.5">
+                    {{ $statusText }}
                 </div>
             </div>
         </div>
 
         <!-- Campus Registration Form Container -->
-        <div class="max-w-5xl mx-auto pt-4">
+        <div class="relative max-w-5xl mx-auto space-y-6">
 
-            <!-- Section Italic Heading -->
-            <h2 class="text-2xl sm:text-3xl text-center section-italic-title mb-10">
-                Register Your Campus
-            </h2>
+            <div class="{{ !$isLive ? 'pointer-events-none select-none filter blur-[3px] opacity-40' : '' }}">
 
-            <!-- Step Indicator Pills -->
-            <div class="flex items-center justify-center gap-3 mb-10 text-xs font-semibold">
-                <span id="badgeStep1"
-                    class="px-4 py-2 rounded-full bg-[#271e6d] text-white shadow-sm flex items-center gap-2">
-                    <span
-                        class="w-5 h-5 rounded-full bg-white text-[#271e6d] text-xs flex items-center justify-center font-bold">1</span>
-                    <span>School Information</span>
-                </span>
-                <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
-                <span id="badgeStep2" class="px-4 py-2 rounded-full bg-gray-100 text-gray-400 flex items-center gap-2">
-                    <span
-                        class="w-5 h-5 rounded-full bg-gray-200 text-gray-600 text-xs flex items-center justify-center font-bold">2</span>
-                    <span>Staff &amp; Students Data</span>
-                </span>
-            </div>
+                <!-- Step Indicator Pills -->
+                <div class="flex items-center justify-center gap-3 text-xs font-semibold pt-2">
+                    <span id="badgeStep1"
+                        class="px-4 py-2 rounded-full bg-[#1f1659] text-white shadow-sm flex items-center gap-2 transition-all">
+                        <span
+                            class="w-5 h-5 rounded-full bg-white text-[#1f1659] text-xs flex items-center justify-center font-bold">1</span>
+                        <span>School Information</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    <span id="badgeStep2"
+                        class="px-4 py-2 rounded-full bg-slate-100 text-slate-400 flex items-center gap-2 transition-all">
+                        <span
+                            class="w-5 h-5 rounded-full bg-slate-200 text-slate-600 text-xs flex items-center justify-center font-bold">2</span>
+                        <span>Staff &amp; Students Data</span>
+                    </span>
+                </div>
 
-            <!-- Alert Notification Box -->
-            <div id="alertBox" class="hidden mb-8"></div>
+                <!-- Alert Notification Box -->
+                <div id="alertBox" class="hidden"></div>
 
-            <form id="registrationForm" action="{{ route('register.submit') }}" method="POST" class="space-y-12">
-                @csrf
+                <form id="registrationForm" action="{{ route('register.submit') }}" method="POST" class="space-y-12">
+                    @csrf
 
-                <!-- ================= STEP 1: School Information ================= -->
-                <div id="step-1" class="space-y-6">
-                    <!-- Section Header with Green Dot -->
-                    <div class="flex items-center gap-3">
-                        <span class="dot-indicator-green dot-blink"></span>
-                        <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
-                            School Information
-                        </h3>
-                    </div>
-
-                    <!-- Row 1: 3 Select Pills -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <select id="stateSelect" name="state_id" required class="form-pill-select">
-                                <option value="">Select Your State</option>
-                                @foreach($states as $state)
-                                    <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-red-500 text-xs mt-1 block" id="err-state_id"></span>
+                    <!-- ================= STEP 1: School Information ================= -->
+                    <div id="step-1" class="space-y-6">
+                        <!-- Section Header with Green Dot -->
+                        <div class="flex items-center gap-3">
+                            <span class="dot-indicator-green dot-blink"></span>
+                            <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
+                                School Information
+                            </h3>
                         </div>
 
-                        <div>
-                            <select id="zoneSelect" name="zone_id" required disabled class="form-pill-select opacity-70">
-                                <option value="">Select Your Zone</option>
-                            </select>
-                            <span id="zoneLoading" class="text-xs text-indigo-600 mt-1 hidden">
-                                <i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading zones...
-                            </span>
-                            <span class="text-red-500 text-xs mt-1 block" id="err-zone_id"></span>
+                        <!-- Row 1: 3 Select Pills -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <select id="stateSelect" name="state_id" required class="form-pill-select">
+                                    <option value="">Select Your State</option>
+                                    @foreach($states as $state)
+                                        <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-red-500 text-xs mt-1 block" id="err-state_id"></span>
+                            </div>
+
+                            <div>
+                                <select id="zoneSelect" name="zone_id" required disabled
+                                    class="form-pill-select opacity-70">
+                                    <option value="">Select Your Zone</option>
+                                </select>
+                                <span id="zoneLoading" class="text-xs text-indigo-600 mt-1 hidden">
+                                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading zones...
+                                </span>
+                                <span class="text-red-500 text-xs mt-1 block" id="err-zone_id"></span>
+                            </div>
+
+                            <div>
+                                <select name="category_id" required class="form-pill-select">
+                                    <option value="">Select Your School Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-red-500 text-xs mt-1 block" id="err-category_id"></span>
+                            </div>
                         </div>
 
-                        <div>
-                            <select name="category_id" required class="form-pill-select">
-                                <option value="">Select Your School Category</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-red-500 text-xs mt-1 block" id="err-category_id"></span>
-                        </div>
-                    </div>
-
-                    <!-- Row 2: Name of School -->
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                            Name of School (As per Official Records) with place
-                        </label>
-                        <input type="text" name="name" id="inp-name" required
-                            placeholder="e.g. YASEEN ENGLISH SCHOOL - MALOORA" class="form-pill-input input-uppercase"
-                            oninput="this.value=this.value.toUpperCase()">
-                        <span class="text-[11px] text-gray-400 mt-1 block">
-                            <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Reference: YASEEN ENGLISH SCHOOL -
-                            MALOORA
-                        </span>
-                        <span class="text-red-500 text-xs mt-1 block" id="err-name"></span>
-                    </div>
-
-                    <!-- Row 3: Contact & Email -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Row 2: Name of School -->
                         <div>
                             <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                                School Contact Number
+                                Name of School (As per Official Records) with place
                             </label>
-                            <input type="tel" name="phone" id="inp-phone" required placeholder="e.g. +91 9876543210"
-                                class="form-pill-input" maxlength="15" oninput="validateIndianPhone(this)">
-                            <span class="text-[10px] text-gray-400 mt-1 block">
-                                <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Valid Indian mobile number only
-                                (10 digits, starts with 6-9)
+                            <input type="text" name="name" id="inp-name" required
+                                placeholder="e.g. YASEEN ENGLISH SCHOOL - MALOORA" class="form-pill-input input-uppercase"
+                                oninput="this.value=this.value.toUpperCase()">
+                            <span class="text-[11px] text-gray-400 mt-1 block">
+                                <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Reference: YASEEN ENGLISH SCHOOL
+                                -
+                                MALOORA
                             </span>
-                            <span class="text-red-500 text-xs mt-1 block" id="err-phone"></span>
+                            <span class="text-red-500 text-xs mt-1 block" id="err-name"></span>
                         </div>
 
+                        <!-- Row 3: Contact & Email -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
+                                    School Contact Number
+                                </label>
+                                <input type="tel" name="phone" id="inp-phone" required placeholder="e.g. +91 9876543210"
+                                    class="form-pill-input" maxlength="15" oninput="validateIndianPhone(this)">
+                                <span class="text-[10px] text-gray-400 mt-1 block">
+                                    <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Valid Indian mobile number
+                                    only
+                                    (10 digits, starts with 6-9)
+                                </span>
+                                <span class="text-red-500 text-xs mt-1 block" id="err-phone"></span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
+                                    School Email ID
+                                </label>
+                                <input type="email" name="email" id="inp-email" required placeholder="principal@school.edu"
+                                    class="form-pill-input" oninput="validateEmail(this)" onblur="validateEmailBlur(this)">
+                                <span class="text-[10px] text-gray-400 mt-1 block">
+                                    <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Enter a valid email address
+                                    (e.g. name@domain.com)
+                                </span>
+                                <span class="text-red-500 text-xs mt-1 block" id="err-email"></span>
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Address of School -->
                         <div>
                             <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                                School Email ID
+                                Address of School (As per Official Records)
                             </label>
-                            <input type="email" name="email" id="inp-email" required placeholder="principal@school.edu"
-                                class="form-pill-input" oninput="validateEmail(this)" onblur="validateEmailBlur(this)">
-                            <span class="text-[10px] text-gray-400 mt-1 block">
-                                <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Enter a valid email address
-                                (e.g. name@domain.com)
-                            </span>
-                            <span class="text-red-500 text-xs mt-1 block" id="err-email"></span>
+                            <textarea name="address" id="inp-address" rows="3" required placeholder=""
+                                class="form-pill-input input-uppercase"
+                                oninput="this.value=this.value.toUpperCase()"></textarea>
+                            <span class="text-red-500 text-xs mt-1 block" id="err-address"></span>
                         </div>
-                    </div>
 
-                    <!-- Row 4: Address of School -->
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                            Address of School (As per Official Records)
-                        </label>
-                        <textarea name="address" id="inp-address" rows="3" required placeholder=""
-                            class="form-pill-input input-uppercase"
-                            oninput="this.value=this.value.toUpperCase()"></textarea>
-                        <span class="text-red-500 text-xs mt-1 block" id="err-address"></span>
-                    </div>
-
-                    <!-- Row 5: SUIC & Save & Next Button -->
-                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <!-- Row 5: SUIC -->
                         <div class="w-full sm:w-1/2">
                             <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
                                 School Unique Identification Code (SUIC)
@@ -211,197 +247,296 @@
                             <span class="text-red-500 text-xs mt-1 block" id="err-suic_code"></span>
                         </div>
 
+                        {{-- ── Domain Section ─────────────────────────────────────── --}}
+                        <div id="domainSection"
+                            class="rounded-2xl border border-[#e2e1f0] bg-gradient-to-br from-[#f5f4fc] to-[#eef0fb] p-5 space-y-4 shadow-sm">
+                            <!-- Header -->
+                            <div class="flex items-center gap-2.5">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-[#271e6d]/10 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-globe text-[#271e6d] text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-[#271e6d]">Do you have your own domain?</p>
+                                    <p class="text-[11px] text-gray-400">A domain is your school's website address (e.g.
+                                        myschool.edu.in)</p>
+                                </div>
+                            </div>
+
+                            <!-- YES / NO toggle for has_own_domain -->
+                            <div class="flex gap-3">
+                                <button type="button" id="ownDomainYes" class="domain-toggle-btn domain-btn-inactive"
+                                    onclick="setOwnDomain('yes')">
+                                    <i class="fa-solid fa-check mr-1.5"></i>YES
+                                </button>
+                                <button type="button" id="ownDomainNo" class="domain-toggle-btn domain-btn-inactive"
+                                    onclick="setOwnDomain('no')">
+                                    <i class="fa-solid fa-xmark mr-1.5"></i>NO
+                                </button>
+                            </div>
+                            <!-- Hidden fields for form submission -->
+                            <input type="hidden" name="has_own_domain" id="hdnHasOwnDomain" value="">
+                            <input type="hidden" name="wants_new_domain" id="hdnWantsNewDomain" value="">
+                            <input type="hidden" name="existing_domain" id="hdnExistingDomain" value="">
+                            <input type="hidden" name="desired_domain" id="hdnDesiredDomain" value="">
+
+                            <!-- IF YES: Enter existing domain -->
+                            <div id="existingDomainPanel" class="domain-panel">
+                                <label class="block text-xs font-semibold text-[#271e6d] mb-1.5">
+                                    Enter your school's domain URL
+                                </label>
+                                <div class="flex gap-2 items-start">
+                                    <div class="flex-1">
+                                        <input type="text" id="inp-existing_domain"
+                                            placeholder="e.g. https://myschool.edu.in" class="form-pill-input"
+                                            oninput="onExistingDomainInput(this)" onblur="checkDomainLive()">
+                                        <span class="text-red-500 text-xs mt-1 block" id="err-existing_domain"></span>
+                                    </div>
+                                    <button type="button" id="btnCheckLive" onclick="checkDomainLive()"
+                                        class="domain-check-btn flex-shrink-0">
+                                        <i class="fa-solid fa-satellite-dish mr-1.5"></i>Validate
+                                    </button>
+                                </div>
+                                <!-- Status badge -->
+                                <div id="domainLiveStatus" class="domain-status-badge hidden"></div>
+                            </div>
+
+                            <!-- IF NO: Do you want a new domain? -->
+                            <div id="wantNewDomainPanel" class="domain-panel">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <i class="fa-solid fa-circle-question text-[#271e6d]/60 text-sm"></i>
+                                    <p class="text-sm font-semibold text-[#271e6d]">Do you want a new domain?</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="button" id="wantDomainYes" class="domain-toggle-btn domain-btn-inactive"
+                                        onclick="setWantDomain('yes')">
+                                        <i class="fa-solid fa-check mr-1.5"></i>YES
+                                    </button>
+                                    <button type="button" id="wantDomainNo" class="domain-toggle-btn domain-btn-inactive"
+                                        onclick="setWantDomain('no')">
+                                        <i class="fa-solid fa-xmark mr-1.5"></i>NO
+                                    </button>
+                                </div>
+
+                                <!-- IF want new YES: domain availability checker -->
+                                <div id="desiredDomainPanel" class="domain-panel mt-4">
+                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1.5">
+                                        Enter your desired domain name
+                                    </label>
+                                    <div class="flex gap-2 items-start">
+                                        <div class="flex-1">
+                                            <input type="text" id="inp-desired_domain" placeholder="e.g. myschool.edu.in"
+                                                class="form-pill-input" oninput="onDesiredDomainInput(this)"
+                                                onblur="checkDomainAvailability()">
+                                            <span class="text-red-500 text-xs mt-1 block" id="err-desired_domain"></span>
+                                        </div>
+                                        <button type="button" id="btnCheckAvail" onclick="checkDomainAvailability()"
+                                            class="domain-check-btn flex-shrink-0">
+                                            <i class="fa-solid fa-magnifying-glass mr-1.5"></i>Check
+                                        </button>
+                                    </div>
+                                    <!-- Availability badge -->
+                                    <div id="domainAvailStatus" class="domain-status-badge hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Save & Next Button -->
                         <div class="sm:text-right">
                             <button type="button" id="btnNextStep" class="btn-purple-action">
                                 Save &amp; Next <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- ================= STEP 2: Staff, Students & Principal Data (HIDDEN INITIALLY) ================= -->
-                <div id="step-2" class="space-y-10 pt-4 hidden">
+                    <!-- ================= STEP 2: Staff, Students & Principal Data (HIDDEN INITIALLY) ================= -->
+                    <div id="step-2" class="space-y-10 pt-4 hidden">
 
-                    <!-- 1. Staff Count -->
-                    <div class="space-y-5">
-                        <div class="flex items-center gap-3">
-                            <span class="dot-indicator-green dot-blink"></span>
-                            <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
-                                Staff Count
-                            </h3>
-                        </div>
-
-                        <!-- Teaching Staff Row -->
-                        <div class="staff-card rounded-2xl border border-[#e2e1f0] bg-[#f9f9fd] p-4 space-y-3">
-                            <!-- Toggle Header -->
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-bold text-[#271e6d] flex items-center gap-2">
-                                    Teaching Staff
-                                </span>
-                                <label class="staff-toggle" title="Toggle Teaching Staff">
-                                    <input type="checkbox" id="toggleTeaching" checked>
-                                    <span class="staff-toggle-slider"></span>
-                                </label>
+                        <!-- 1. Staff Count -->
+                        <div class="space-y-5">
+                            <div class="flex items-center gap-3">
+                                <span class="dot-indicator-green dot-blink"></span>
+                                <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
+                                    Staff Count
+                                </h3>
                             </div>
-                            <!-- Count Inputs -->
-                            <div id="teachingInputs" class="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male</label>
-                                    <input type="number" name="teaching_male_staff" id="inp-teaching_male" min="0" value="0"
-                                        required class="form-pill-input text-center">
-                                    <span class="text-red-500 text-xs mt-1 block" id="err-teaching_male_staff"></span>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female</label>
-                                    <input type="number" name="teaching_female_staff" id="inp-teaching_female" min="0"
-                                        value="0" required class="form-pill-input text-center">
-                                    <span class="text-red-500 text-xs mt-1 block" id="err-teaching_female_staff"></span>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Sub-Total</label>
-                                    <input type="number" id="teachingStaffTotal" readonly value="0"
-                                        class="form-pill-input text-center bg-emerald-50 font-bold text-emerald-700">
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Non-Teaching Staff Row -->
-                        <div class="staff-card rounded-2xl border border-[#e2e1f0] bg-[#f9f9fd] p-4 space-y-3">
-                            <!-- Toggle Header -->
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm font-bold text-[#271e6d] flex items-center gap-2">
-                                    Non-Teaching Staff
-                                </span>
-                                <label class="staff-toggle" title="Toggle Non-Teaching Staff">
-                                    <input type="checkbox" id="toggleNonTeaching" checked>
-                                    <span class="staff-toggle-slider"></span>
-                                </label>
-                            </div>
-                            <!-- Count Inputs -->
-                            <div id="nonTeachingInputs" class="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male</label>
-                                    <input type="number" name="non_teaching_male_staff" id="inp-nonteaching_male" min="0"
-                                        value="0" required class="form-pill-input text-center">
-                                    <span class="text-red-500 text-xs mt-1 block" id="err-non_teaching_male_staff"></span>
+                            <!-- Teaching Staff Row -->
+                            <div class="staff-card rounded-2xl border border-[#e2e1f0] bg-[#f9f9fd] p-4 space-y-3">
+                                <!-- Toggle Header -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-bold text-[#271e6d] flex items-center gap-2">
+                                        Teaching Staff
+                                    </span>
+                                    <label class="staff-toggle" title="Toggle Teaching Staff">
+                                        <input type="checkbox" id="toggleTeaching" checked>
+                                        <span class="staff-toggle-slider"></span>
+                                    </label>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female</label>
-                                    <input type="number" name="non_teaching_female_staff" id="inp-nonteaching_female"
-                                        min="0" value="0" required class="form-pill-input text-center">
-                                    <span class="text-red-500 text-xs mt-1 block" id="err-non_teaching_female_staff"></span>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Sub-Total</label>
-                                    <input type="number" id="nonTeachingStaffTotal" readonly value="0"
-                                        class="form-pill-input text-center bg-emerald-50 font-bold text-emerald-700">
+                                <!-- Count Inputs -->
+                                <div id="teachingInputs" class="grid grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male</label>
+                                        <input type="number" name="teaching_male_staff" id="inp-teaching_male" min="0"
+                                            value="0" required class="form-pill-input text-center">
+                                        <span class="text-red-500 text-xs mt-1 block" id="err-teaching_male_staff"></span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female</label>
+                                        <input type="number" name="teaching_female_staff" id="inp-teaching_female" min="0"
+                                            value="0" required class="form-pill-input text-center">
+                                        <span class="text-red-500 text-xs mt-1 block" id="err-teaching_female_staff"></span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Sub-Total</label>
+                                        <input type="number" id="teachingStaffTotal" readonly value="0"
+                                            class="form-pill-input text-center bg-emerald-50 font-bold text-emerald-700">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Grand Total Staff -->
-                        <div class="flex items-center justify-end gap-4">
-                            <span class="text-sm font-bold text-[#271e6d]">Grand Total (All Staff)</span>
-                            <input type="number" id="totalStaffDisplay" readonly value="0"
-                                class="form-pill-input text-center bg-[#271e6d] text-white font-black text-base w-28 rounded-xl">
-                        </div>
-                    </div>
-
-                    <!-- 2. Students Count -->
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
-                            <span class="dot-indicator-green dot-blink"></span>
-                            <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
-                                Students Count
-                            </h3>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
-                            <div>
-                                <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male Students</label>
-                                <input type="number" name="male_students" min="0" value="0" required
-                                    class="form-pill-input text-center">
-                                <span class="text-red-500 text-xs mt-1 block" id="err-male_students"></span>
+                            <!-- Non-Teaching Staff Row -->
+                            <div class="staff-card rounded-2xl border border-[#e2e1f0] bg-[#f9f9fd] p-4 space-y-3">
+                                <!-- Toggle Header -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-bold text-[#271e6d] flex items-center gap-2">
+                                        Non-Teaching Staff
+                                    </span>
+                                    <label class="staff-toggle" title="Toggle Non-Teaching Staff">
+                                        <input type="checkbox" id="toggleNonTeaching" checked>
+                                        <span class="staff-toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <!-- Count Inputs -->
+                                <div id="nonTeachingInputs" class="grid grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male</label>
+                                        <input type="number" name="non_teaching_male_staff" id="inp-nonteaching_male"
+                                            min="0" value="0" required class="form-pill-input text-center">
+                                        <span class="text-red-500 text-xs mt-1 block"
+                                            id="err-non_teaching_male_staff"></span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female</label>
+                                        <input type="number" name="non_teaching_female_staff" id="inp-nonteaching_female"
+                                            min="0" value="0" required class="form-pill-input text-center">
+                                        <span class="text-red-500 text-xs mt-1 block"
+                                            id="err-non_teaching_female_staff"></span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-[#271e6d] mb-1">Sub-Total</label>
+                                        <input type="number" id="nonTeachingStaffTotal" readonly value="0"
+                                            class="form-pill-input text-center bg-emerald-50 font-bold text-emerald-700">
+                                    </div>
+                                </div>
                             </div>
 
-                            <div>
-                                <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female Students</label>
-                                <input type="number" name="female_students" min="0" value="0" required
-                                    class="form-pill-input text-center">
-                                <span class="text-red-500 text-xs mt-1 block" id="err-female_students"></span>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-[#271e6d] mb-1">Total Students</label>
-                                <input type="number" id="totalStudentsDisplay" readonly value="0"
-                                    class="form-pill-input text-center bg-indigo-50/50 font-bold">
+                            <!-- Grand Total Staff -->
+                            <div class="flex items-center justify-end gap-4">
+                                <span class="text-sm font-bold text-[#271e6d]">Grand Total (All Staff)</span>
+                                <input type="number" id="totalStaffDisplay" readonly value="0"
+                                    class="form-pill-input text-center bg-[#271e6d] text-white font-black text-base w-28 rounded-xl">
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 3. Principal's Data & Buttons -->
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-3">
-                            <span class="dot-indicator-green dot-blink"></span>
-                            <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
-                                Principal's Data
-                            </h3>
+                        <!-- 2. Students Count -->
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <span class="dot-indicator-green dot-blink"></span>
+                                <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
+                                    Students Count
+                                </h3>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
+                                <div>
+                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Male Students</label>
+                                    <input type="number" name="male_students" min="0" value="0" required
+                                        class="form-pill-input text-center">
+                                    <span class="text-red-500 text-xs mt-1 block" id="err-male_students"></span>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Female Students</label>
+                                    <input type="number" name="female_students" min="0" value="0" required
+                                        class="form-pill-input text-center">
+                                    <span class="text-red-500 text-xs mt-1 block" id="err-female_students"></span>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-[#271e6d] mb-1">Total Students</label>
+                                    <input type="number" id="totalStudentsDisplay" readonly value="0"
+                                        class="form-pill-input text-center bg-indigo-50/50 font-bold">
+                                </div>
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                                Name of Principal
-                            </label>
-                            <input type="text" name="principal_name" id="inp-principal_name" required placeholder=""
-                                class="form-pill-input input-uppercase" oninput="this.value=this.value.toUpperCase()">
-                            <span class="text-red-500 text-xs mt-1 block" id="err-principal_name"></span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                                    Contact Number
-                                </label>
-                                <input type="tel" id="principalContact" name="principal_phone"
-                                    placeholder="e.g. +91 9876543210" class="form-pill-input"
-                                    oninput="validateIndianPhone(this)">
-                                <span class="text-[10px] text-gray-400 mt-1 block">
-                                    <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Valid Indian mobile number
-                                    only
-                                </span>
-                                <span class="text-red-500 text-xs mt-1 block" id="err-principalContact"></span>
+                        <!-- 3. Principal's Data & Buttons -->
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-3">
+                                <span class="dot-indicator-green dot-blink"></span>
+                                <h3 class="text-base sm:text-lg font-semibold text-[#271e6d]">
+                                    Principal's Data
+                                </h3>
                             </div>
 
                             <div>
                                 <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
-                                    Email ID
+                                    Name of Principal
                                 </label>
-                                <input type="email" id="principalEmail" name="principal_email"
-                                    placeholder="principal@school.edu" class="form-pill-input" oninput="validateEmail(this)"
-                                    onblur="validateEmailBlur(this)">
-                                <span class="text-[10px] text-gray-400 mt-1 block">
-                                    <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Enter a valid email address
-                                </span>
-                                <span class="text-red-500 text-xs mt-1 block" id="err-principalEmail"></span>
+                                <input type="text" name="principal_name" id="inp-principal_name" required placeholder=""
+                                    class="form-pill-input input-uppercase" oninput="this.value=this.value.toUpperCase()">
+                                <span class="text-red-500 text-xs mt-1 block" id="err-principal_name"></span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
+                                        Contact Number
+                                    </label>
+                                    <input type="tel" id="principalContact" name="principal_phone"
+                                        placeholder="e.g. +91 9876543210" class="form-pill-input"
+                                        oninput="validateIndianPhone(this)">
+                                    <span class="text-[10px] text-gray-400 mt-1 block">
+                                        <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Valid Indian mobile
+                                        number
+                                        only
+                                    </span>
+                                    <span class="text-red-500 text-xs mt-1 block" id="err-principalContact"></span>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs sm:text-sm font-semibold text-[#271e6d] mb-1.5">
+                                        Email ID
+                                    </label>
+                                    <input type="email" id="principalEmail" name="principal_email"
+                                        placeholder="principal@school.edu" class="form-pill-input"
+                                        oninput="validateEmail(this)" onblur="validateEmailBlur(this)">
+                                    <span class="text-[10px] text-gray-400 mt-1 block">
+                                        <i class="fa-solid fa-circle-info mr-1 text-indigo-400"></i>Enter a valid email
+                                        address
+                                    </span>
+                                    <span class="text-red-500 text-xs mt-1 block" id="err-principalEmail"></span>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons (Back & Submit) -->
+                            <div class="flex items-center justify-between pt-4">
+                                <button type="button" id="btnPrevStep"
+                                    class="px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm hover:bg-gray-200 transition-colors inline-flex items-center gap-2">
+                                    <i class="fa-solid fa-arrow-left text-xs"></i> Back
+                                </button>
+
+                                <button type="submit" id="submitBtn" class="btn-purple-action text-lg px-12 py-3.5">
+                                    Submit
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Action Buttons (Back & Submit) -->
-                        <div class="flex items-center justify-between pt-4">
-                            <button type="button" id="btnPrevStep"
-                                class="px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold text-sm hover:bg-gray-200 transition-colors inline-flex items-center gap-2">
-                                <i class="fa-solid fa-arrow-left text-xs"></i> Back
-                            </button>
-
-                            <button type="submit" id="submitBtn" class="btn-purple-action text-lg px-12 py-3.5">
-                                Submit
-                            </button>
-                        </div>
                     </div>
+                </form>
 
-                </div>
-            </form>
-
+            </div>
         </div>
 
     </div>
@@ -434,12 +569,14 @@
             cursor: pointer;
             flex-shrink: 0;
         }
+
         .staff-toggle input {
             opacity: 0;
             width: 0;
             height: 0;
             position: absolute;
         }
+
         .staff-toggle-slider {
             position: absolute;
             inset: 0;
@@ -447,6 +584,7 @@
             border-radius: 9999px;
             transition: background-color 0.25s ease;
         }
+
         .staff-toggle-slider::before {
             content: '';
             position: absolute;
@@ -457,12 +595,14 @@
             background: #fff;
             border-radius: 50%;
             transition: transform 0.25s ease;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
-        .staff-toggle input:checked + .staff-toggle-slider {
+
+        .staff-toggle input:checked+.staff-toggle-slider {
             background-color: #271e6d;
         }
-        .staff-toggle input:checked + .staff-toggle-slider::before {
+
+        .staff-toggle input:checked+.staff-toggle-slider::before {
             transform: translateX(20px);
         }
 
@@ -515,6 +655,123 @@
         .field-valid {
             border-color: #10b981 !important;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
+        }
+
+        /* ── Domain Section ──────────────────────────────────────────────────── */
+        .domain-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.45rem 1.1rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .domain-btn-inactive {
+            background: #fff;
+            border-color: #d1d5db;
+            color: #6b7280;
+        }
+
+        .domain-btn-inactive:hover {
+            border-color: #271e6d;
+            color: #271e6d;
+            background: #f5f4fc;
+        }
+
+        .domain-btn-yes-active {
+            background: #271e6d;
+            border-color: #271e6d;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(39, 30, 109, 0.22);
+        }
+
+        .domain-btn-no-active {
+            background: #6b7280;
+            border-color: #6b7280;
+            color: #fff;
+        }
+
+        .domain-panel {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.35s cubic-bezier(.4, 0, .2, 1), opacity 0.3s ease;
+        }
+
+        .domain-panel.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        .domain-check-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.55rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: #271e6d;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            margin-top: 0;
+        }
+
+        .domain-check-btn:hover {
+            opacity: 0.88;
+        }
+
+        .domain-check-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .domain-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .domain-status-live {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .domain-status-dead {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .domain-status-available {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .domain-status-taken {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .domain-status-checking {
+            background: #ede9fe;
+            color: #4c1d95;
+            border: 1px solid #c4b5fd;
         }
     </style>
     <script>
@@ -855,6 +1112,22 @@
                     valid = false;
                 }
 
+                // Domain validation gate
+                const ownDomain = document.getElementById('hdnHasOwnDomain').value;
+                const wantDomain = document.getElementById('hdnWantsNewDomain').value;
+                if (ownDomain === 'yes' && !window._domainLiveValidated) {
+                    document.getElementById('err-existing_domain').textContent =
+                        'Please validate your domain URL before proceeding.';
+                    document.getElementById('inp-existing_domain')?.classList.add('field-invalid');
+                    valid = false;
+                }
+                if (ownDomain === 'no' && wantDomain === 'yes' && !window._domainAvailValidated) {
+                    document.getElementById('err-desired_domain').textContent =
+                        'Please check domain availability before proceeding.';
+                    document.getElementById('inp-desired_domain')?.classList.add('field-invalid');
+                    valid = false;
+                }
+
                 if (valid) {
                     showStep(2);
                 }
@@ -930,10 +1203,11 @@
                         if (!res.ok) {
                             if (res.status === 422 && data.errors) {
                                 let hasStep1Error = false;
+                                const step1Keys = ['state_id', 'zone_id', 'category_id', 'name', 'phone', 'email', 'address', 'suic_code', 'has_own_domain', 'wants_new_domain', 'existing_domain', 'desired_domain'];
                                 Object.entries(data.errors).forEach(([key, msgs]) => {
                                     const el = document.getElementById(`err-${key}`);
                                     if (el) el.textContent = msgs[0];
-                                    if (['state_id', 'zone_id', 'category_id', 'name', 'phone', 'email', 'address', 'suic_code'].includes(key)) {
+                                    if (step1Keys.includes(key)) {
                                         hasStep1Error = true;
                                     }
                                 });
@@ -953,6 +1227,8 @@
                         zoneSelect.innerHTML = '<option value="">Select Your Zone</option>';
                         zoneSelect.disabled = true;
                         zoneSelect.classList.add('opacity-70');
+                        // Reset domain section
+                        resetDomainSection();
                         showStep(1);
 
                         showSuccessAndRedirect(
@@ -971,5 +1247,251 @@
                     });
             });
         });
+
+        /* ════════════════════════════════════════════════════════════════════════
+           DOMAIN SECTION LOGIC
+        ════════════════════════════════════════════════════════════════════════ */
+
+        // State flags
+        window._domainLiveValidated = false;
+        window._domainAvailValidated = false;
+        let _domainLiveDebounce = null;
+        let _domainAvailDebounce = null;
+
+        function resetDomainSection() {
+            // Reset all hidden fields
+            document.getElementById('hdnHasOwnDomain').value = '';
+            document.getElementById('hdnWantsNewDomain').value = '';
+            document.getElementById('hdnExistingDomain').value = '';
+            document.getElementById('hdnDesiredDomain').value = '';
+            // Reset flags
+            window._domainLiveValidated = false;
+            window._domainAvailValidated = false;
+            // Reset buttons
+            ['ownDomainYes', 'ownDomainNo', 'wantDomainYes', 'wantDomainNo'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.className = 'domain-toggle-btn domain-btn-inactive';
+            });
+            // Close all panels
+            ['existingDomainPanel', 'wantNewDomainPanel', 'desiredDomainPanel'].forEach(id => {
+                document.getElementById(id)?.classList.remove('open');
+            });
+            // Clear inputs & badges
+            const inpE = document.getElementById('inp-existing_domain');
+            const inpD = document.getElementById('inp-desired_domain');
+            if (inpE) { inpE.value = ''; inpE.className = 'form-pill-input'; }
+            if (inpD) { inpD.value = ''; inpD.className = 'form-pill-input'; }
+            ['domainLiveStatus', 'domainAvailStatus'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.className = 'domain-status-badge hidden'; el.innerHTML = ''; }
+            });
+            ['err-existing_domain', 'err-desired_domain'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '';
+            });
+        }
+
+        function setOwnDomain(choice) {
+            document.getElementById('hdnHasOwnDomain').value = choice;
+            document.getElementById('hdnWantsNewDomain').value = '';
+            window._domainLiveValidated = false;
+            window._domainAvailValidated = false;
+
+            const yesBtn = document.getElementById('ownDomainYes');
+            const noBtn = document.getElementById('ownDomainNo');
+
+            if (choice === 'yes') {
+                yesBtn.className = 'domain-toggle-btn domain-btn-yes-active';
+                noBtn.className = 'domain-toggle-btn domain-btn-inactive';
+                document.getElementById('existingDomainPanel').classList.add('open');
+                document.getElementById('wantNewDomainPanel').classList.remove('open');
+                document.getElementById('desiredDomainPanel').classList.remove('open');
+                document.getElementById('hdnDesiredDomain').value = '';
+                const inpD = document.getElementById('inp-desired_domain');
+                if (inpD) inpD.value = '';
+                setDomainAvailStatus('', '', false);
+            } else {
+                noBtn.className = 'domain-toggle-btn domain-btn-no-active';
+                yesBtn.className = 'domain-toggle-btn domain-btn-inactive';
+                document.getElementById('wantNewDomainPanel').classList.add('open');
+                document.getElementById('existingDomainPanel').classList.remove('open');
+                document.getElementById('hdnExistingDomain').value = '';
+                const inpE = document.getElementById('inp-existing_domain');
+                if (inpE) inpE.value = '';
+                setDomainLiveStatus('', '', false);
+                // Reset want domain buttons
+                ['wantDomainYes', 'wantDomainNo'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) btn.className = 'domain-toggle-btn domain-btn-inactive';
+                });
+            }
+        }
+
+        function setWantDomain(choice) {
+            document.getElementById('hdnWantsNewDomain').value = choice;
+            window._domainAvailValidated = false;
+
+            const yesBtn = document.getElementById('wantDomainYes');
+            const noBtn = document.getElementById('wantDomainNo');
+
+            if (choice === 'yes') {
+                yesBtn.className = 'domain-toggle-btn domain-btn-yes-active';
+                noBtn.className = 'domain-toggle-btn domain-btn-inactive';
+                document.getElementById('desiredDomainPanel').classList.add('open');
+            } else {
+                noBtn.className = 'domain-toggle-btn domain-btn-no-active';
+                yesBtn.className = 'domain-toggle-btn domain-btn-inactive';
+                document.getElementById('desiredDomainPanel').classList.remove('open');
+                document.getElementById('hdnDesiredDomain').value = '';
+                const inpD = document.getElementById('inp-desired_domain');
+                if (inpD) inpD.value = '';
+                setDomainAvailStatus('', '', false);
+            }
+        }
+
+        // ── Domain status helpers ────────────────────────────────────────────────
+        function setDomainLiveStatus(message, type, show) {
+            const badge = document.getElementById('domainLiveStatus');
+            if (!badge) return;
+            if (!show || !message) { badge.className = 'domain-status-badge hidden'; return; }
+            badge.classList.remove('hidden');
+            if (type === 'live') {
+                badge.className = 'domain-status-badge domain-status-live';
+                badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
+            } else if (type === 'dead') {
+                badge.className = 'domain-status-badge domain-status-dead';
+                badge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${message}`;
+            } else {
+                badge.className = 'domain-status-badge domain-status-checking';
+                badge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${message}`;
+            }
+        }
+
+        function setDomainAvailStatus(message, type, show) {
+            const badge = document.getElementById('domainAvailStatus');
+            if (!badge) return;
+            if (!show || !message) { badge.className = 'domain-status-badge hidden'; return; }
+            badge.classList.remove('hidden');
+            if (type === 'available') {
+                badge.className = 'domain-status-badge domain-status-available';
+                badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
+            } else if (type === 'taken') {
+                badge.className = 'domain-status-badge domain-status-taken';
+                badge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${message}`;
+            } else {
+                badge.className = 'domain-status-badge domain-status-checking';
+                badge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${message}`;
+            }
+        }
+
+        // ── Check domain live ────────────────────────────────────────────────────
+        function onExistingDomainInput(inp) {
+            inp.value = inp.value.replace(/[^a-zA-Z0-9:/._\-?=&#%+]/g, '');
+            window._domainLiveValidated = false;
+            setDomainLiveStatus('', '', false);
+            document.getElementById('err-existing_domain').textContent = '';
+            inp.classList.remove('field-valid', 'field-invalid');
+            clearTimeout(_domainLiveDebounce);
+        }
+
+        function checkDomainLive() {
+            const inp = document.getElementById('inp-existing_domain');
+            const btnEl = document.getElementById('btnCheckLive');
+            const errEl = document.getElementById('err-existing_domain');
+            if (!inp) return;
+
+            let url = inp.value.trim();
+            if (!url) return;
+
+            // Auto-prefix https if missing
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                inp.value = url;
+            }
+
+            setDomainLiveStatus('Checking…', 'checking', true);
+            if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Checking…'; }
+
+            fetch(`{{ route('public.check-domain-live') }}?url=${encodeURIComponent(url)}`, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.live) {
+                        window._domainLiveValidated = true;
+                        document.getElementById('hdnExistingDomain').value = url;
+                        inp.classList.add('field-valid');
+                        inp.classList.remove('field-invalid');
+                        setDomainLiveStatus(data.message, 'live', true);
+                        if (errEl) errEl.textContent = '';
+                    } else {
+                        window._domainLiveValidated = false;
+                        document.getElementById('hdnExistingDomain').value = '';
+                        inp.classList.add('field-invalid');
+                        inp.classList.remove('field-valid');
+                        setDomainLiveStatus(data.message, 'dead', true);
+                        if (errEl) errEl.textContent = data.message;
+                    }
+                })
+                .catch(() => {
+                    window._domainLiveValidated = false;
+                    setDomainLiveStatus('Could not reach the server. Please try again.', 'dead', true);
+                })
+                .finally(() => {
+                    if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = '<i class="fa-solid fa-satellite-dish mr-1.5"></i>Validate'; }
+                });
+        }
+
+        // ── Check domain availability ─────────────────────────────────────────────
+        function onDesiredDomainInput(inp) {
+            inp.value = inp.value.replace(/[^a-zA-Z0-9.\-]/g, '').toLowerCase();
+            window._domainAvailValidated = false;
+            setDomainAvailStatus('', '', false);
+            document.getElementById('err-desired_domain').textContent = '';
+            inp.classList.remove('field-valid', 'field-invalid');
+            clearTimeout(_domainAvailDebounce);
+        }
+
+        function checkDomainAvailability() {
+            const inp = document.getElementById('inp-desired_domain');
+            const btnEl = document.getElementById('btnCheckAvail');
+            const errEl = document.getElementById('err-desired_domain');
+            if (!inp) return;
+
+            const domain = inp.value.trim().toLowerCase();
+            if (!domain) return;
+
+            setDomainAvailStatus('Checking availability…', 'checking', true);
+            if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Checking…'; }
+
+            fetch(`{{ route('public.check-domain-availability') }}?domain=${encodeURIComponent(domain)}`, {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.available) {
+                        window._domainAvailValidated = true;
+                        document.getElementById('hdnDesiredDomain').value = domain;
+                        inp.classList.add('field-valid');
+                        inp.classList.remove('field-invalid');
+                        setDomainAvailStatus(data.message, 'available', true);
+                        if (errEl) errEl.textContent = '';
+                    } else {
+                        window._domainAvailValidated = false;
+                        document.getElementById('hdnDesiredDomain').value = '';
+                        inp.classList.add('field-invalid');
+                        inp.classList.remove('field-valid');
+                        setDomainAvailStatus(data.message, 'taken', true);
+                        if (errEl) errEl.textContent = data.message;
+                    }
+                })
+                .catch(() => {
+                    window._domainAvailValidated = false;
+                    setDomainAvailStatus('Could not reach the server. Please try again.', 'taken', true);
+                })
+                .finally(() => {
+                    if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = '<i class="fa-solid fa-magnifying-glass mr-1.5"></i>Check'; }
+                });
+        }
     </script>
 @endsection
