@@ -33,138 +33,132 @@
         class="fixed top-0 left-0 bottom-0 w-64 z-50 transition-transform duration-300 ease-in-out flex flex-col bg-white border-r border-slate-200/80 shadow-sm font-sans font-normal">
 
         <!-- Logo Header -->
-        <div class="p-5 flex justify-between items-center border-b border-slate-100 bg-white">
-            <div class="flex items-center gap-3">
-                <img src="{{ asset('logo.png') }}" alt="YES INDIA ERP" class="h-9 w-auto object-contain">
-            </div>
+        <div class="p-6 flex justify-center items-center bg-white">
+            <img src="{{ asset('logo.png') }}" alt="YES INDIA ERP" class="h-10 w-auto object-contain">
             <button @click="open = false"
-                class="lg:hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                class="absolute right-4 lg:hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
                 <i class="fa-solid fa-xmark text-base"></i>
             </button>
         </div>
 
-        <!-- Admin Avatar Strip -->
-        <div class="px-3.5 py-3 mx-3 mt-3 rounded-2xl bg-slate-50 border border-slate-200/70">
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm flex-shrink-0 bg-[#271e6d] text-white shadow-xs">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'AD', 0, 2)) }}
-                </div>
-                <div class="min-w-0">
-                    <p class="text-xs font-semibold text-slate-800 truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
-                    <p class="text-[10px] text-slate-500 truncate font-normal">
-                        {{ ucfirst(str_replace('_', ' ', auth()->user()->role ?? 'admin')) }}</p>
-                </div>
-                <a href="{{ route('admin.settings') }}"
-                    class="ml-auto w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
-                    title="Settings">
-                    <i class="fa-solid fa-gear text-xs"></i>
-                </a>
-            </div>
-        </div>
-
         <!-- Navigation Links -->
-        <div class="flex-grow overflow-y-auto py-4 px-3 space-y-5">
+        <div class="flex-grow overflow-y-auto py-2 px-0 space-y-6">
 
             <!-- Group: Main -->
             <div>
-                <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Main Navigation</p>
+                <p class="px-6 mb-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">Main Navigation</p>
                 <div class="space-y-1">
 
                     <!-- Dashboard -->
                     <a href="{{ route('admin.dashboard') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal transition-all duration-200 {{ $active == 'dashboard' ? 'bg-[#271e6d] text-white font-semibold shadow-sm shadow-[#271e6d]/20' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
-                        <div
-                            class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors text-xs {{ $active == 'dashboard' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-800' }}">
-                            <i class="fa-solid fa-chart-pie"></i>
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-semibold transition-all duration-200 {{ $active == 'dashboard' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-solid fa-table-cells-large text-[15px]"></i>
                         </div>
-                        <span>Executive Dashboard</span>
-                        @if($active == 'dashboard')
-                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        @endif
+                        <span>Dashboard</span>
                     </a>
 
                     <!-- School Directory -->
                     <a href="{{ route('admin.schools.index') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal transition-all duration-200 {{ $active == 'schools' ? 'bg-[#271e6d] text-white font-semibold shadow-sm shadow-[#271e6d]/20' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
-                        <div
-                            class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors text-xs {{ $active == 'schools' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-800' }}">
-                            <i class="fa-solid fa-building-columns"></i>
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-medium transition-all duration-200 {{ $active == 'schools' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-solid fa-graduation-cap text-[15px]"></i>
                         </div>
                         <span>School Directory</span>
-                        @if($active == 'schools')
-                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        @endif
+                    </a>
+
+                    <!-- Activity Log -->
+                    <a href="{{ route('admin.activity-logs') }}"
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-medium transition-all duration-200 {{ $active == 'activity-logs' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-solid fa-clock-rotate-left text-[15px]"></i>
+                        </div>
+                        <span>Activity Log</span>
                     </a>
 
                     <!-- Settings -->
                     <a href="{{ route('admin.settings') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal transition-all duration-200 {{ $active == 'settings' ? 'bg-[#271e6d] text-white font-semibold shadow-sm shadow-[#271e6d]/20' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
-                        <div
-                            class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors text-xs {{ $active == 'settings' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-800' }}">
-                            <i class="fa-solid fa-gear"></i>
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-medium transition-all duration-200 {{ $active == 'settings' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-solid fa-gear text-[15px]"></i>
                         </div>
-                        <span>Settings &amp; Profile</span>
-                        @if($active == 'settings')
-                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                        @endif
+                        <span>Settings</span>
+                    </a>
+
+                    <!-- Profile -->
+                    <a href="{{ route('admin.profile') }}"
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-medium transition-all duration-200 {{ $active == 'profile' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-regular fa-user text-[15px]"></i>
+                        </div>
+                        <span>Profile</span>
+                    </a>
+
+                    <!-- Reports -->
+                    <a href="{{ route('admin.reports') }}"
+                        class="flex items-center gap-3 pr-4 py-2.5 text-sm font-medium transition-all duration-200 {{ $active == 'reports' ? 'bg-[#e5edff] text-[#111c2d] border-l-4 border-[#00030d] rounded-r-2xl' : 'text-[#505f76] hover:bg-slate-50 hover:text-[#111c2d] border-l-4 border-transparent' }}">
+                        <div class="w-8 flex justify-center ml-2">
+                            <i class="fa-solid fa-chart-simple text-[15px]"></i>
+                        </div>
+                        <span>Reports</span>
                     </a>
 
                 </div>
             </div>
 
             <!-- Group: Quick Actions -->
-            <div>
-                <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Quick Actions</p>
-                <div class="space-y-1">
+            <div class="px-6 space-y-3">
+                <p class="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Quick Actions</p>
 
-                    <a href="{{ route('register') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">
-                        <div
-                            class="w-7 h-7 rounded-lg text-xs flex items-center justify-center shrink-0 bg-emerald-50 text-emerald-600 border border-emerald-200/60 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-circle-plus"></i>
-                        </div>
-                        <span>Register New Campus</span>
-                    </a>
+                <a href="{{ route('register') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#111c2d] bg-white border border-slate-200 hover:border-[#10b981] hover:shadow-sm transition-all duration-200">
+                    <i class="fa-solid fa-circle-plus text-[#10b981]"></i>
+                    Register New Campus
+                </a>
 
-                    <a href="{{ route('admin.schools.export.csv') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">
-                        <div
-                            class="w-7 h-7 rounded-lg text-xs flex items-center justify-center shrink-0 bg-amber-50 text-amber-600 border border-amber-200/60 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-file-export"></i>
-                        </div>
-                        <span>Export CSV Records</span>
-                    </a>
+                <a href="{{ route('admin.schools.export.csv') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#111c2d] bg-white border border-slate-200 hover:border-[#f59e0b] hover:shadow-sm transition-all duration-200">
+                    <i class="fa-regular fa-file-lines text-[#f59e0b]"></i>
+                    Export CSV Records
+                </a>
 
-                    <a href="{{ route('home') }}"
-                        class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-normal text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">
-                        <div
-                            class="w-7 h-7 rounded-lg text-xs flex items-center justify-center shrink-0 bg-blue-50 text-blue-600 border border-blue-200/60 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-compass"></i>
-                        </div>
-                        <span>View Public Status</span>
-                    </a>
-
-                </div>
+                <a href="{{ route('home') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-[#111c2d] bg-white border border-slate-200 hover:border-[#6366f1] hover:shadow-sm transition-all duration-200">
+                    <i class="fa-regular fa-eye text-[#6366f1]"></i>
+                    View Public Status
+                </a>
             </div>
 
         </div>
 
         <!-- Sidebar Footer -->
-        <div class="p-3 border-t border-slate-100 bg-slate-50/50">
+        <div class="p-4 bg-white mt-auto border-t border-slate-100">
+            <!-- User Card -->
+            <div class="flex items-center gap-3 p-3 mb-3 border border-slate-200 rounded-xl bg-white shadow-sm">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center">
+                        <!-- Placeholder image or initial -->
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin User') }}&background=e2e8f0&color=475569" alt="User" class="w-full h-full object-cover">
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name ?? 'Admin User' }}</p>
+                    <p class="text-[10px] text-slate-500 truncate">{{ ucfirst(str_replace('_', ' ', auth()->user()->role ?? 'Super Admin')) }}</p>
+                </div>
+                <button class="text-slate-400 hover:text-slate-700 transition-colors">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
                 <button type="submit"
-                    class="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-semibold bg-red-50 text-red-600 border border-red-200/80 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-200">
-                    <i class="fa-solid fa-right-from-bracket text-xs"></i>
-                    Sign Out Console
+                    class="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-xl text-xs font-bold bg-[#00030d] text-white hover:bg-slate-800 transition-all duration-200">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    SIGN OUT
                 </button>
             </form>
-            <div class="flex items-center justify-between px-1 mt-2.5 text-[10px] text-slate-400 font-mono">
-                <span>YES Schools ERP</span>
-                <span
-                    class="px-1.5 py-0.5 rounded bg-slate-200/70 text-slate-600 font-semibold border border-slate-300/40">v2.4.0</span>
-            </div>
         </div>
 
     </aside>

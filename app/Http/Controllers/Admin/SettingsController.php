@@ -16,42 +16,14 @@ class SettingsController extends Controller
         $user = auth()->user();
         $registration_enabled = Setting::get('registration_enabled', '1');
         $registration_disabled_notice = Setting::get('registration_disabled_notice', 'Campus registrations are currently paused for institutional census audit.');
+        
+        $states = \App\Models\State::withCount('schools')->get();
+        $zones = \App\Models\Zone::withCount('schools')->get();
 
-        return view('admin.settings.index', compact('user', 'registration_enabled', 'registration_disabled_notice'));
+        return view('admin.settings.index', compact('user', 'registration_enabled', 'registration_disabled_notice', 'states', 'zones'));
     }
 
-    public function updateProfile(Request $request)
-    {
-        $user = auth()->user();
 
-        $request->validate([
-            'name'             => 'required|string|max:255',
-            'email'            => 'required|email|max:255|unique:users,email,' . $user->id,
-            'current_password' => 'required|string',
-            'new_password'     => 'nullable|string|min:8|confirmed',
-        ]);
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'The provided current password does not match our records.'])->withInput();
-        }
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        if ($request->filled('new_password')) {
-            $user->password = Hash::make($request->new_password);
-        }
-
-        $user->save();
-
-        ActivityLog::create([
-            'user_id'     => $user->id,
-            'description' => "Admin profile updated for user: {$user->email}",
-            'ip_address'  => $request->ip(),
-        ]);
-
-        return back()->with('success', 'Profile and account credentials updated successfully.');
-    }
 
     public function toggleRegistration(Request $request)
     {
@@ -60,8 +32,8 @@ class SettingsController extends Controller
             'registration_disabled_notice' => 'nullable|string|max:500',
         ]);
 
-        $enabled = (string) $request->registration_enabled;
-        $notice = $request->registration_disabled_notice ?: 'Campus registrations are currently paused for institutional census audit.';
+        $enabled = (string) $request->input('registration_enabled');
+        $notice = $request->input('registration_disabled_notice') ?: 'Campus registrations are currently paused for institutional census audit.';
 
         Setting::set('registration_enabled', $enabled);
         Setting::set('registration_disabled_notice', $notice);
@@ -70,6 +42,7 @@ class SettingsController extends Controller
 
         ActivityLog::create([
             'user_id'     => auth()->id(),
+            'action'      => 'settings_updated',
             'description' => "Admin {$statusText} public campus registration form.",
             'ip_address'  => $request->ip(),
         ]);

@@ -25,6 +25,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            
+            \App\Models\ActivityLog::create([
+                'user_id' => Auth::id(),
+                'description' => 'Logged in successfully',
+                'ip_address' => $request->ip()
+            ]);
+
             return redirect()->intended(route('admin.dashboard'))
                 ->with('success', 'Welcome back, Administrator!');
         }

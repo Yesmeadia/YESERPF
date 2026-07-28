@@ -12,9 +12,18 @@ class DashboardController extends Controller
         protected AnalyticsService $analyticsService
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->analyticsService->getDashboardMetrics();
+        $stateId = $request->input('state_id');
+        $zoneId = $request->input('zone_id');
+
+        $data = $this->analyticsService->getDashboardMetrics($stateId, $zoneId);
+        
+        $data['states'] = \App\Models\State::orderBy('name')->get();
+        $data['zones'] = \App\Models\Zone::orderBy('name')->get();
+        $data['selectedState'] = $stateId;
+        $data['selectedZone'] = $zoneId;
+
         return view('admin.dashboard.index', $data);
     }
 }

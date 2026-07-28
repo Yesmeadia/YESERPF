@@ -15,28 +15,62 @@ class AnalyticsService
         protected SchoolRepositoryInterface $schoolRepository
     ) {}
 
-    public function getDashboardMetrics(): array
+    public function getDashboardMetrics(?int $stateId = null, ?int $zoneId = null): array
     {
+        // For status counts, we might want to filter as well? 
+        // The user asked for "sate/zone seletor on the State Distribution section", but filtering the whole dashboard makes sense.
+        // Let's filter the state distribution query explicitly.
+        
         $statusCounts = $this->schoolRepository->getStatusCounts();
+        
+        $totalStudentsQuery = School::where('status', 'on_going');
+        $totalTeachersQuery = School::where('status', 'on_going');
+        
+        if ($stateId) {
+            $totalStudentsQuery->where('state_id', $stateId);
+            $totalTeachersQuery->where('state_id', $stateId);
+        }
+        if ($zoneId) {
+            $totalStudentsQuery->where('zone_id', $zoneId);
+            $totalTeachersQuery->where('zone_id', $zoneId);
+        }
 
-        $totalStudents = School::where('status', 'on_going')->sum('total_students');
-        $totalTeachers = School::where('status', 'on_going')->sum('total_teachers');
+        $totalStudents = $totalStudentsQuery->sum('total_students');
+        $totalTeachers = $totalTeachersQuery->sum('total_teachers');
 
         // State distribution
-        $stateDistribution = DB::table('schools')
+        $stateDistributionQuery = DB::table('schools')
             ->join('states', 'schools.state_id', '=', 'states.id')
             ->whereNull('schools.deleted_at')
-            ->select('states.name as state_name', DB::raw('count(schools.id) as total'))
+            ->select('states.name as state_name', DB::raw('count(schools.id) as total'));
+            
+        if ($stateId) {
+            $stateDistributionQuery->where('schools.state_id', $stateId);
+        }
+        if ($zoneId) {
+            $stateDistributionQuery->where('schools.zone_id', $zoneId);
+        }
+
+        $stateDistribution = $stateDistributionQuery
             ->groupBy('states.name')
             ->orderBy('total', 'desc')
             ->limit(10)
             ->get();
 
         // Category distribution
-        $categoryDistribution = DB::table('schools')
+        $categoryDistributionQuery = DB::table('schools')
             ->join('categories', 'schools.category_id', '=', 'categories.id')
             ->whereNull('schools.deleted_at')
-            ->select('categories.name as category_name', DB::raw('count(schools.id) as total'))
+            ->select('categories.name as category_name', DB::raw('count(schools.id) as total'));
+            
+        if ($stateId) {
+            $categoryDistributionQuery->where('schools.state_id', $stateId);
+        }
+        if ($zoneId) {
+            $categoryDistributionQuery->where('schools.zone_id', $zoneId);
+        }
+
+        $categoryDistribution = $categoryDistributionQuery
             ->groupBy('categories.name')
             ->get();
 
@@ -47,10 +81,18 @@ class AnalyticsService
             ->get();
 
         // Recent schools
-        $recentSchools = School::with(['state', 'zone', 'category'])
+        $recentSchoolsQuery = School::with(['state', 'zone', 'category'])
             ->latest()
-            ->limit(6)
-            ->get();
+            ->limit(6);
+            
+        if ($stateId) {
+            $recentSchoolsQuery->where('state_id', $stateId);
+        }
+        if ($zoneId) {
+            $recentSchoolsQuery->where('zone_id', $zoneId);
+        }
+        
+        $recentSchools = $recentSchoolsQuery->get();
 
         return [
             'status_counts' => $statusCounts,

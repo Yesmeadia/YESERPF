@@ -4,6 +4,11 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SchoolManagementController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\StateController;
+use App\Http\Controllers\Admin\ZoneController;
 use App\Http\Controllers\PublicSchoolController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -30,10 +35,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Settings & Profile
+        // Settings
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-        Route::post('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile');
         Route::post('/settings/registration', [SettingsController::class, 'toggleRegistration'])->name('settings.registration');
+        
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        // Reports
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+
+        // Activity Logs
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs');
+
+        // State & Zone Management (Used in Settings)
+        Route::post('/states', [StateController::class, 'store'])->name('states.store');
+        Route::delete('/states/{id}', [StateController::class, 'destroy'])->name('states.destroy');
+        Route::post('/zones', [ZoneController::class, 'store'])->name('zones.store');
+        Route::delete('/zones/{id}', [ZoneController::class, 'destroy'])->name('zones.destroy');
 
         // School Management
         Route::get('/schools', [SchoolManagementController::class, 'index'])->name('schools.index');

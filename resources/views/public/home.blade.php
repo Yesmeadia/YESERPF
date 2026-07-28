@@ -24,7 +24,15 @@
             $statusText = $stats['status_text'] ?? 'All Systems Operational';
             $bannerBg = 'bg-[#3af0a4]';
             $heroIcon = 'fa-check';
-            if ($overallStatus === 'maintenance') {
+            $statusDesc = 'Systems across all zones are performing within normal parameters.';
+            
+            if (isset($zoneGroups) && $zoneGroups->isEmpty()) {
+                $overallStatus = 'awaiting_registration';
+                $statusText = 'Awaiting registration';
+                $bannerBg = 'bg-yellow-300';
+                $heroIcon = 'fa-clock-rotate-left';
+                $statusDesc = 'No zones have been registered yet.';
+            } elseif ($overallStatus === 'maintenance') {
                 $bannerBg = 'bg-amber-200';
                 $heroIcon = 'fa-screwdriver-wrench';
             } elseif ($overallStatus === 'degraded') {
@@ -40,7 +48,7 @@
             class="{{ $bannerBg }} rounded-2xl p-6 sm:p-7 text-[#044e37] flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-sm">
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 rounded-full bg-[#044e37] text-[#3af0a4] flex items-center justify-center text-lg font-bold shrink-0">
+                    class="w-10 h-10 rounded-full bg-[#044e37] text-white flex items-center justify-center text-lg font-bold shrink-0">
                     <i class="fa-solid {{ $heroIcon }}"></i>
                 </div>
                 <div>
@@ -48,7 +56,7 @@
                         {{ $statusText }}
                     </h2>
                     <p class="text-xs sm:text-sm font-normal text-[#065f46] mt-0.5">
-                        Systems across all zones are performing within normal parameters.
+                        {{ $statusDesc }}
                     </p>
                 </div>
             </div>

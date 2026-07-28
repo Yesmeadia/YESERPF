@@ -106,22 +106,11 @@
             <!-- Page Header Section -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200/80">
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">
                         School Directory
                     </h1>
-                    <p class="text-xs text-slate-500 font-normal mt-1">Audit campus registrations, edit profile records, update status, and export database records</p>
-                </div>
-
-                <div class="flex items-center gap-2.5">
-                    <a href="{{ route('admin.schools.export.csv', request()->all()) }}"
-                        class="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs rounded-xl hover:bg-emerald-100 transition-all inline-flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-file-csv"></i> Export CSV
-                    </a>
-                    <a href="{{ route('register') }}" target="_blank"
-                        class="btn-purple-action text-xs px-4 py-2 inline-flex items-center gap-2 shadow-sm">
-                        <i class="fa-solid fa-plus text-xs"></i>
-                        <span>Register Campus</span>
-                    </a>
+                    <p class="text-xs text-slate-500 font-normal mt-1">Audit campus registrations, edit profile records,
+                        update status, and export database records</p>
                 </div>
             </div>
 
@@ -129,14 +118,12 @@
             <div class="admin-card-light p-4">
                 <form action="{{ route('admin.schools.index') }}" method="GET"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
-                    
+
                     <!-- Search Input -->
                     <div class="lg:col-span-4">
-                        <input type="text"
-                               name="search"
-                               value="{{ $filters['search'] ?? '' }}"
-                               placeholder="Search SUIC code, school name, principal or email..."
-                               class="form-pill-input-admin">
+                        <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
+                            placeholder="Search SUIC code, school name, principal or email..."
+                            class="form-pill-input-admin">
                     </div>
 
                     <!-- State Filter -->
@@ -155,10 +142,12 @@
                     <div class="lg:col-span-3">
                         <select name="status" class="form-pill-input-admin">
                             <option value="">All Statuses</option>
-                            <option value="registered" {{ ($filters['status'] ?? '') == 'registered' ? 'selected' : '' }}>Registered</option>
+                            <option value="registered" {{ ($filters['status'] ?? '') == 'registered' ? 'selected' : '' }}>
+                                Registered</option>
                             <option value="under_construction" {{ ($filters['status'] ?? '') == 'under_construction' ? 'selected' : '' }}>Under Construction</option>
                             <option value="trial_running" {{ ($filters['status'] ?? '') == 'trial_running' ? 'selected' : '' }}>Trial Running</option>
-                            <option value="on_going" {{ ($filters['status'] ?? '') == 'on_going' ? 'selected' : '' }}>On Going</option>
+                            <option value="on_going" {{ ($filters['status'] ?? '') == 'on_going' ? 'selected' : '' }}>On Going
+                            </option>
                         </select>
                     </div>
 
@@ -169,8 +158,8 @@
                         </button>
                         @if(request()->hasAny(['search', 'state_id', 'status']))
                             <a href="{{ route('admin.schools.index') }}"
-                               class="p-2.5 rounded-xl bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors shrink-0"
-                               title="Reset Filters">
+                                class="p-2.5 rounded-xl bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200 transition-colors shrink-0"
+                                title="Reset Filters">
                                 <i class="fa-solid fa-xmark text-sm"></i>
                             </a>
                         @endif
@@ -195,7 +184,7 @@
                         <tbody class="divide-y divide-[#e2e1f0] text-slate-700">
                             @forelse($schools as $s)
                                 <tr>
-                                    
+
                                     <!-- SUIC Code Badge -->
                                     <td class="font-mono font-bold text-[#271e6d] whitespace-nowrap">
                                         <span class="bg-[#f3f2fa] px-2.5 py-1 rounded-lg border border-[#e2e1f0] inline-block">
@@ -206,7 +195,8 @@
                                     <!-- School & Principal Details -->
                                     <td>
                                         <div class="font-bold text-slate-900 text-sm leading-snug">
-                                            <a href="{{ route('admin.schools.show', $s->id) }}" class="hover:text-[#271e6d] transition-colors">
+                                            <a href="{{ route('admin.schools.show', $s->id) }}"
+                                                class="hover:text-[#271e6d] transition-colors">
                                                 {{ $s->name }}
                                             </a>
                                         </div>
@@ -225,69 +215,77 @@
 
                                     <!-- Census Strength -->
                                     <td class="whitespace-nowrap">
-                                        <div class="text-[11px] text-slate-600">Students: <strong class="font-mono text-[#271e6d]">{{ number_format($s->total_students) }}</strong></div>
-                                        <div class="text-[11px] text-slate-600">Staff: <strong class="font-mono text-emerald-700">{{ number_format($s->total_teachers) }}</strong></div>
+                                        <div class="text-[11px] text-slate-600">Students: <strong
+                                                class="font-mono text-[#271e6d]">{{ number_format($s->total_students) }}</strong>
+                                        </div>
+                                        <div class="text-[11px] text-slate-600">Staff: <strong
+                                                class="font-mono text-emerald-700">{{ number_format($s->total_teachers) }}</strong>
+                                        </div>
                                     </td>
 
                                     <!-- Status Pill Badge -->
                                     <td class="whitespace-nowrap">
-                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider badge-{{ $s->status }}">
+                                        <span
+                                            class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider badge-{{ $s->status }}">
                                             {{ str_replace('_', ' ', $s->status) }}
                                         </span>
                                     </td>
 
                                     <!-- Action Dropdown Menu -->
                                     <td class="text-right whitespace-nowrap">
-                                        <div class="relative inline-block text-left" x-data="{ open: false }" @click.away="open = false">
-                                            <button @click="open = !open"
-                                                    type="button"
-                                                    class="w-8 h-8 rounded-xl bg-[#f3f2fa] border border-[#e2e1f0] text-[#271e6d] hover:bg-[#271e6d] hover:text-white flex items-center justify-center transition-all shadow-sm ml-auto"
-                                                    title="Options">
+                                        <div class="relative inline-block text-left" x-data="{ open: false }"
+                                            @click.away="open = false">
+                                            <button @click="open = !open" type="button"
+                                                class="w-8 h-8 rounded-xl bg-[#f3f2fa] border border-[#e2e1f0] text-[#271e6d] hover:bg-[#271e6d] hover:text-white flex items-center justify-center transition-all shadow-sm ml-auto"
+                                                title="Options">
                                                 <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
                                             </button>
 
-                                            <div x-show="open"
-                                                 x-cloak
-                                                 x-transition:enter="transition ease-out duration-100"
-                                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                                 x-transition:leave="transition ease-in duration-75"
-                                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                                 class="absolute right-0 mt-1.5 w-48 rounded-xl bg-white shadow-xl border border-[#e2e1f0] py-1.5 z-50 text-xs font-medium text-slate-700 divide-y divide-slate-100 text-left">
-                                                
+                                            <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="transform opacity-0 scale-95"
+                                                x-transition:enter-end="transform opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="transform opacity-100 scale-100"
+                                                x-transition:leave-end="transform opacity-0 scale-95"
+                                                class="absolute right-0 mt-1.5 w-48 rounded-xl bg-white shadow-xl border border-[#e2e1f0] py-1.5 z-50 text-xs font-medium text-slate-700 divide-y divide-slate-100 text-left">
+
                                                 <div class="py-1">
                                                     <!-- 1. View Record Modal -->
                                                     <button @click="open = false; openDetailModal('{{ $s->id }}')"
-                                                            class="w-full text-left px-3.5 py-2 hover:bg-[#f3f2fa] text-slate-700 hover:text-[#271e6d] flex items-center gap-2">
+                                                        class="w-full text-left px-3.5 py-2 hover:bg-[#f3f2fa] text-slate-700 hover:text-[#271e6d] flex items-center gap-2">
                                                         <i class="fa-solid fa-eye text-indigo-500 w-4"></i> View Details
                                                     </button>
-                                                    
+
                                                     <!-- 2. Edit School Page -->
                                                     <a href="{{ route('admin.schools.edit', $s->id) }}"
-                                                       class="block w-full text-left px-3.5 py-2 hover:bg-amber-50 text-slate-700 hover:text-amber-700 flex items-center gap-2 font-bold">
-                                                        <i class="fa-solid fa-pen-to-square text-amber-500 w-4"></i> Edit Profile
+                                                        class="block w-full text-left px-3.5 py-2 hover:bg-amber-50 text-slate-700 hover:text-amber-700 flex items-center gap-2 font-bold">
+                                                        <i class="fa-solid fa-pen-to-square text-amber-500 w-4"></i> Edit
+                                                        Profile
                                                     </a>
                                                 </div>
 
                                                 <div class="py-1">
                                                     <!-- 3. Update Status Modal -->
-                                                    <button @click="open = false; openStatusModal('{{ $s->id }}', '{{ addslashes($s->name) }}', '{{ $s->status }}')"
-                                                            class="w-full text-left px-3.5 py-2 hover:bg-purple-50 text-slate-700 hover:text-purple-700 flex items-center gap-2">
+                                                    <button
+                                                        @click="open = false; openStatusModal('{{ $s->id }}', '{{ addslashes($s->name) }}', '{{ $s->status }}')"
+                                                        class="w-full text-left px-3.5 py-2 hover:bg-purple-50 text-slate-700 hover:text-purple-700 flex items-center gap-2">
                                                         <i class="fa-solid fa-tags text-purple-500 w-4"></i> Update Status
                                                     </button>
 
                                                     <!-- 4. Audit History Logs -->
                                                     <button @click="open = false; openTimelineModal('{{ $s->id }}')"
-                                                            class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2">
-                                                        <i class="fa-solid fa-clock-rotate-left text-slate-400 w-4"></i> Audit History
+                                                        class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2">
+                                                        <i class="fa-solid fa-clock-rotate-left text-slate-400 w-4"></i> Audit
+                                                        History
                                                     </button>
                                                 </div>
 
                                                 <div class="py-1">
                                                     <a href="{{ route('admin.schools.show', $s->id) }}"
-                                                       class="block w-full text-left px-3.5 py-2 hover:bg-indigo-50 text-[#271e6d] flex items-center gap-2 font-bold">
-                                                        <i class="fa-solid fa-arrow-up-right-from-square text-indigo-500 w-4"></i> Full Record Page
+                                                        class="block w-full text-left px-3.5 py-2 hover:bg-indigo-50 text-[#271e6d] flex items-center gap-2 font-bold">
+                                                        <i
+                                                            class="fa-solid fa-arrow-up-right-from-square text-indigo-500 w-4"></i>
+                                                        Full Record Page
                                                     </a>
                                                 </div>
 
@@ -317,7 +315,8 @@
         <!-- Quick Detail Modal -->
         <div id="detailModal"
             class="fixed inset-0 z-50 hidden bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-            <div class="bg-white border border-slate-200 w-full max-w-3xl rounded-2xl shadow-xl overflow-hidden relative flex flex-col max-h-[85vh]">
+            <div
+                class="bg-white border border-slate-200 w-full max-w-3xl rounded-2xl shadow-xl overflow-hidden relative flex flex-col max-h-[85vh]">
                 <div class="p-5 bg-[#271e6d] text-white flex items-center justify-between shrink-0">
                     <div>
                         <span class="px-2 py-0.5 rounded bg-white/20 text-white font-mono text-[10px] font-bold"
@@ -327,7 +326,7 @@
                     <button onclick="closeDetailModal()" class="text-indigo-200 hover:text-white"><i
                             class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
-                
+
                 <div class="p-5 space-y-4 overflow-y-auto text-slate-700 text-xs flex-grow">
                     <div id="detailContainer"></div>
                 </div>
@@ -335,7 +334,7 @@
                 <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
                     <div class="flex items-center gap-2">
                         <a id="detailEditPageBtn" href="#"
-                           class="btn-purple-action text-xs px-4 py-1.5 inline-flex items-center gap-1.5 shadow-sm">
+                            class="btn-purple-action text-xs px-4 py-1.5 inline-flex items-center gap-1.5 shadow-sm">
                             <i class="fa-solid fa-pen-to-square"></i> Open Edit Page
                         </a>
                         <a id="detailFullPageLink" href="#" target="_blank"
@@ -426,7 +425,7 @@
             suicBadge.textContent = 'SUIC';
             fullPageLink.href = `/admin/schools/${id}`;
             editPageBtn.href = `/admin/schools/${id}/edit`;
-            
+
             container.innerHTML = '<div class="text-center text-slate-400 text-xs py-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading record...</div>';
             modal.classList.remove('hidden');
 
@@ -443,48 +442,48 @@
                     const totalStudents = (s.male_students || 0) + (s.female_students || 0);
 
                     container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">School Information</div>
-                        <div class="space-y-1.5 text-xs text-slate-600">
-                            <div class="flex justify-between"><span>SUIC Code:</span> <strong class="font-mono text-[#271e6d]">${s.suic_code || 'N/A'}</strong></div>
-                            <div class="flex justify-between"><span>Category:</span> <strong>${s.category ? s.category.name : 'N/A'}</strong></div>
-                            <div class="flex justify-between"><span>State:</span> <strong>${s.state ? s.state.name : 'N/A'}</strong></div>
-                            <div class="flex justify-between"><span>Zone:</span> <strong>${s.zone ? s.zone.name : 'N/A'}</strong></div>
-                            <div class="pt-1"><span class="text-slate-500 block mb-0.5">Address:</span> <div class="p-2 bg-white border border-slate-200 rounded-lg text-slate-800 uppercase font-semibold">${s.address || 'N/A'}</div></div>
-                        </div>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Principal & Contact</div>
-                        <div class="space-y-2 text-xs text-slate-600">
-                            <div><span class="text-slate-500 block mb-0.5">Principal:</span> <div class="p-2 bg-white border border-slate-200 rounded-lg font-bold text-[#271e6d] uppercase">${s.principal_name || 'N/A'}</div></div>
-                            <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Phone:</span> <strong class="font-mono">${s.phone || 'N/A'}</strong></div>
-                            <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Email:</span> <strong class="font-mono text-[#271e6d]">${s.email || 'N/A'}</strong></div>
-                        </div>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Staff Census</div>
-                        <div class="space-y-1.5 text-xs text-slate-600">
-                            <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Teaching Staff:</span> <strong>${teachingTotal} (M: ${s.teaching_male_staff || 0}, F: ${s.teaching_female_staff || 0})</strong></div>
-                            <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Non-Teaching Staff:</span> <strong>${nonTeachingTotal} (M: ${s.non_teaching_male_staff || 0}, F: ${s.non_teaching_female_staff || 0})</strong></div>
-                            <div class="p-2 bg-[#271e6d] text-white rounded-lg flex justify-between font-bold"><span>Grand Total Staff:</span> <span class="font-mono">${grandStaffTotal}</span></div>
-                        </div>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                        <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Student Census</div>
-                        <div class="space-y-1.5 text-xs text-slate-600">
-                            <div class="grid grid-cols-2 gap-2 text-center">
-                                <div class="p-2 bg-white border border-slate-200 rounded-lg">Male: <strong class="font-mono text-[#271e6d]">${s.male_students || 0}</strong></div>
-                                <div class="p-2 bg-white border border-slate-200 rounded-lg">Female: <strong class="font-mono text-[#271e6d]">${s.female_students || 0}</strong></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">School Information</div>
+                                <div class="space-y-1.5 text-xs text-slate-600">
+                                    <div class="flex justify-between"><span>SUIC Code:</span> <strong class="font-mono text-[#271e6d]">${s.suic_code || 'N/A'}</strong></div>
+                                    <div class="flex justify-between"><span>Category:</span> <strong>${s.category ? s.category.name : 'N/A'}</strong></div>
+                                    <div class="flex justify-between"><span>State:</span> <strong>${s.state ? s.state.name : 'N/A'}</strong></div>
+                                    <div class="flex justify-between"><span>Zone:</span> <strong>${s.zone ? s.zone.name : 'N/A'}</strong></div>
+                                    <div class="pt-1"><span class="text-slate-500 block mb-0.5">Address:</span> <div class="p-2 bg-white border border-slate-200 rounded-lg text-slate-800 uppercase font-semibold">${s.address || 'N/A'}</div></div>
+                                </div>
                             </div>
-                            <div class="p-2 bg-indigo-50 border border-indigo-200 text-[#271e6d] rounded-lg flex justify-between font-bold"><span>Total Enrolled Students:</span> <span class="font-mono">${totalStudents}</span></div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Principal & Contact</div>
+                                <div class="space-y-2 text-xs text-slate-600">
+                                    <div><span class="text-slate-500 block mb-0.5">Principal:</span> <div class="p-2 bg-white border border-slate-200 rounded-lg font-bold text-[#271e6d] uppercase">${s.principal_name || 'N/A'}</div></div>
+                                    <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Phone:</span> <strong class="font-mono">${s.phone || 'N/A'}</strong></div>
+                                    <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Email:</span> <strong class="font-mono text-[#271e6d]">${s.email || 'N/A'}</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Staff Census</div>
+                                <div class="space-y-1.5 text-xs text-slate-600">
+                                    <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Teaching Staff:</span> <strong>${teachingTotal} (M: ${s.teaching_male_staff || 0}, F: ${s.teaching_female_staff || 0})</strong></div>
+                                    <div class="p-2 bg-white border border-slate-200 rounded-lg flex justify-between"><span>Non-Teaching Staff:</span> <strong>${nonTeachingTotal} (M: ${s.non_teaching_male_staff || 0}, F: ${s.non_teaching_female_staff || 0})</strong></div>
+                                    <div class="p-2 bg-[#271e6d] text-white rounded-lg flex justify-between font-bold"><span>Grand Total Staff:</span> <span class="font-mono">${grandStaffTotal}</span></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                                <div class="font-bold text-slate-800 text-xs border-b border-slate-200 pb-1.5">Student Census</div>
+                                <div class="space-y-1.5 text-xs text-slate-600">
+                                    <div class="grid grid-cols-2 gap-2 text-center">
+                                        <div class="p-2 bg-white border border-slate-200 rounded-lg">Male: <strong class="font-mono text-[#271e6d]">${s.male_students || 0}</strong></div>
+                                        <div class="p-2 bg-white border border-slate-200 rounded-lg">Female: <strong class="font-mono text-[#271e6d]">${s.female_students || 0}</strong></div>
+                                    </div>
+                                    <div class="p-2 bg-indigo-50 border border-indigo-200 text-[#271e6d] rounded-lg flex justify-between font-bold"><span>Total Enrolled Students:</span> <span class="font-mono">${totalStudents}</span></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            `;
+                    `;
                 });
         }
 
@@ -531,11 +530,11 @@
                     data.status_histories.forEach(h => {
                         const date = new Date(h.created_at).toLocaleString();
                         html += `
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-                        <div class="flex justify-between items-center"><span class="font-bold uppercase text-[#271e6d]">${h.status.replace('_', ' ')}</span> <span class="text-[10px] text-slate-400">${date}</span></div>
-                        <div class="text-slate-600 text-[11px]">${h.notes || 'No comments'}</div>
-                    </div>
-                `;
+                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+                                <div class="flex justify-between items-center"><span class="font-bold uppercase text-[#271e6d]">${h.status.replace('_', ' ')}</span> <span class="text-[10px] text-slate-400">${date}</span></div>
+                                <div class="text-slate-600 text-[11px]">${h.notes || 'No comments'}</div>
+                            </div>
+                        `;
                     });
                     html += '</div>';
                     container.innerHTML = html;

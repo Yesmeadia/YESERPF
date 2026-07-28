@@ -12,10 +12,10 @@ class UserSeeder extends Seeder
     {
         // Super Admin
         User::updateOrCreate(
-            ['email' => 'admin@erp.com'],
+            ['email' => 'anfasanukaloor@gmail.com'],
             [
                 'name' => 'Super Administrator',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('App@Kalo9400#'),
                 'role' => 'super_admin',
             ]
         );

@@ -4,7 +4,7 @@
     <div
         class="absolute inset-0 flex items-end justify-center pointer-events-none select-none overflow-hidden opacity-[0.07] z-0 pb-2">
         <h1
-            class="text-5xl sm:text-7xl md:text-[110px] lg:text-[150px] xl:text-[190px] font-black text-gray-400 tracking-tighter leading-none text-center whitespace-nowrap uppercase w-full">
+            class="text-4xl sm:text-6xl md:text-[90px] lg:text-[125px] xl:text-[160px] font-black text-gray-400 tracking-tighter leading-none text-center whitespace-nowrap uppercase w-full">
             YES INDIA SCHOOLS
         </h1>
     </div>
